@@ -1,0 +1,85 @@
+﻿@layout EmptyLayout
+@page "/Login"
+@using PSS.Hotel.Client.LOV;
+@inject NavigationManager NavigationManager
+@inject IEmployeeMasterService EmployeeMasterService
+
+@*<link rel="stylesheet" href="https://cdn.lineicons.com/2.0/LineIcons.css">
+*@
+@*<div class="demo-container ">*@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-12 mx-auto">
+            <div class="text-center image-size-small position-relative">
+                <img src="https://annedece.sirv.com/Images/user-vector.jpg" class="rounded-circle p-2 bg-white">
+                <div class="icon-camera">
+                    <a href="" class="text-primary"><i class="lni lni-camera"></i></a>
+                </div>
+            </div>
+            <div class="p-5 bg-white rounded shadow-lg">
+                <h3 class="mb-2 text-center pt-5">Bagga International</h3>
+
+
+                <EditForm Model="employeeMaster" OnSubmit="HandleSubmit">
+
+                    <label class="font-500">User</label>
+                    <InputSelect @bind-Value="employeeMaster.Empno" class="form-select mb-2" Placeholder="Select Employee Name">
+                       
+                        @foreach (var emp in EmployeeMasterService.Employees)
+                        {
+                            <option value="@emp.Empno">@emp.AliasName</option>
+                        }
+                    </InputSelect>
+
+                    <label for="Password">Password</label>
+                    <InputText id="password" @bind-Value="employeeMaster.Password" type="password" class="form-control mb-2" placeholder="Password"></InputText>
+
+                    <label for="Sections">Section</label>
+                    <RadzenDropDown @bind-Value="value" Data="@sections" TextProperty="Key" ValueProperty="Value" class="form-select mb-4" Placeholder="Select Section"/>
+                    
+                    <RadzenStack AlignItems="AlignItems.Center">
+                        <p class="align-self-center py-0 AlignItem">Transaction Date : @DateTime.Now.ToString("dd/MM/yyyy") </p>
+                    </RadzenStack>
+                    <button class="btn btn-primary btn-lg w-100 shadow-lg" @onclick="JumpToDashboard">SIGN IN</button>
+
+                    <p class="mb-2 text-center pt-5">Copyright : Perfect Software Solution Pvt. Ltd.</p>
+                </EditForm>
+
+
+                <div class="text-center pt-4">
+                    @*   <p class="m-0">Do not have an account? <a href="" class="text-dark font-weight-bold">Sign Up</a></p>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*</div>*@
+
+@code {
+
+    string? value;
+    List<LovSection> sections = new List<LovSection>()
+        {
+            new LovSection{Id = 1, Key="Kitchen", Value="Kitchen"},
+            new LovSection{Id = 2, Key="Waiter",  Value="Waiter"}
+        };
+
+    EmployeeMaster employeeMaster = new EmployeeMaster();
+
+
+
+    void JumpToDashboard()
+    {
+        NavigationManager.NavigateTo("/Index");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await EmployeeMasterService.GetAll();
+    }
+
+    void HandleSubmit()
+    {
+
+    }
+}                      

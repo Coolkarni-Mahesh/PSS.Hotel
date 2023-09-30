@@ -1,0 +1,42 @@
+﻿<div class="bg-info p-2">
+    <div style="display:inline-block">
+        <h4 style="color:white; vertical-align:middle">@Title</h4>
+    </div>
+
+    <div style="display:inline-block">
+        <RadzenDropDown @bind-Value="value" Data="@orderType" TextProperty="Key" ValueProperty="Value" Style="width: auto; max-width: 400px;" />
+    </div>
+
+    <div style="display:inline-block">
+        <select class="form-select" Style="width: auto; max-width: 400px;">
+            <option>Small</option>
+            <option>Large</option>
+        </select>
+    </div>
+    <div style="display:inline-block; color:azure">
+        <h4>Cancel KOT</h4>
+    </div>
+</div>
+
+<div class="p-0">
+    <span class="bg-warning p-1">Total Table = 10</span>
+    <span class="bg-primary p-1" style="color:whitesmoke">Pending No of KOT = 10</span>
+    <span class="bg-warning p-1 ">Pending No of Items = 10</span>
+    <span class="bg-primary p-1" style="color:whitesmoke">Shifted Table</span>
+</div>
+
+@code {
+
+    [Parameter]
+    public string? Title { get; set; }
+
+
+
+    string? value;
+
+    List<LovOrderType> orderType = new List<LovOrderType>()
+    {
+        new LovOrderType{Id = 1, Key="Itemwise", Value="Itemwise"},
+        new LovOrderType{Id = 2, Key="KOTwise", Value="KOTwise"}
+     };
+}

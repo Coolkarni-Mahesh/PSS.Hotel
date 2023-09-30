@@ -1,0 +1,79 @@
+﻿@layout EmptyLayout
+@page "/"
+@inject NavigationManager NavigationManager
+<link rel="stylesheet" href="https://cdn.lineicons.com/2.0/LineIcons.css">
+
+
+<div class="vertical-center-row">
+<div class="container h-auto">
+    <div class="row align-text-top">
+        <div class="col-lg-6 col-12 mx-auto">
+            <div class="p-5 bg-white rounded shadow-lg">
+
+                <EditForm Model="deviceRegistration" OnSubmit="HandleSubmit">
+                    <h5 class="mb-2 text-center pt-1">Server Registration</h5>
+
+                    <label class="font-500">User Name</label>
+                    <InputText id="txtUserName" @bind-Value="deviceRegistration.Username" class="form-control mb-2" tabindex="0" placeholder="Enter User Name" ></InputText>
+
+                    <label class="font-500">Server IP Address</label>
+                        <InputText id="txtServerIPAddress" @bind-Value="deviceRegistration.ServerIPAddress" class="form-control mb-2" tabindex="1" placeholder="Enter Server IP Address"></InputText>
+
+                    <label class="font-500">Registration Date</label>
+                    <input name="" class="form-control mb-3" readonly type="text" value="@DateTime.Now.ToString("dd/MM/yyyy")">
+
+                    <button class="btn btn-primary w-100 shadow-lg mt-2" @onclick="JumpToLoginPage" tabindex="2">Register</button>
+
+                    <p class="mb-2 text-center pt-5">Copyright : Perfect Software Solution Pvt. Ltd.</p>
+                </EditForm>
+
+
+                @*
+                <form>
+                <label class="font-500">User Name</label>
+                <input name="" class="form-control form-control-lg mb-3">
+
+                <label class="font-500">Server IP Address</label>
+                <input name="" class="form-control form-control-lg mb-3">
+
+                <label class="font-500">Registration Date</label>
+                <input name="" class="form-control form-control-lg mb-3" readonly type="text" value="@DateTime.Now.ToString("dd/MM/yyyy")">
+
+                <button class="btn btn-primary btn-lg w-100 shadow-lg" @onclick="JumpToLoginPage">Register</button>
+
+                <p class="mb-2 text-center pt-5">Copyright : Perfect Software Solution Pvt. Ltd.</p>
+                </form>*@
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+@code
+{
+
+    PSS.Hotel.Shared.Models.DeviceRegistration deviceRegistration = new PSS.Hotel.Shared.Models.DeviceRegistration();
+
+    void JumpToLoginPage()
+    {
+        NavigationManager.NavigateTo("/Login");
+    }
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    void HandleSubmit()
+    {
+
+    }
+}
+
+
+
+
+

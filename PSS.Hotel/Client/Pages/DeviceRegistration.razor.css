@@ -1,0 +1,9 @@
+﻿
+
+.vertical-center-row {
+    margin-top:100px;
+    vertical-align:central;
+}
+.page-background-class {
+    background-image: url(~/wwwroot/images/bg1.jpg)
+}

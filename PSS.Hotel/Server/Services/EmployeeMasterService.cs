@@ -1,0 +1,82 @@
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace PSS.Hotel.Server.Services;
+
+public class EmployeeMasterService : IEmployeeMasterService
+{
+    private readonly ModelContext _context;
+
+    public EmployeeMasterService(ModelContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<ServiceResponse<EmployeeMaster>> Add(EmployeeMaster emp)
+    {
+        _context.EmployeeMasters.Add(emp);
+        await _context.SaveChangesAsync();
+        return new ServiceResponse<EmployeeMaster> { Data = emp };
+    }
+
+    public async Task<ServiceResponse<bool>> Delete(int Id)
+    {
+        var Delete = await _context.EmployeeMasters.FindAsync(Id);
+        if (Delete == null)
+        {
+            return new ServiceResponse<bool>
+            {
+                Success = false,
+                Data = false,
+                Message = "Data not found."
+            };
+        }
+        await _context.SaveChangesAsync();
+        return new ServiceResponse<bool> { Data = true };
+    }
+
+    public async Task<ServiceResponse<List<EmployeeMaster>>> GetAll()
+    {
+        var response = new ServiceResponse<List<EmployeeMaster>>
+        {
+            Data = await _context.EmployeeMasters.ToListAsync()
+        };
+        return response;
+    }
+
+    public async Task<ServiceResponse<EmployeeMaster>> GetById(int Id)
+    {
+        var response = new ServiceResponse<EmployeeMaster>();
+        EmployeeMaster? emp = null;
+        emp = await _context.EmployeeMasters.FirstOrDefaultAsync(p => p.Empno == Id);
+     
+        if (emp == null)
+        {
+            response.Success = false;
+            response.Message = "Sorry, but this data does not exist.";
+        }
+        else
+        {
+            response.Data = emp;
+        }
+        return response;
+    }
+
+    public async Task<ServiceResponse<EmployeeMaster>> Update(EmployeeMaster emp)
+    {
+        var Update = await _context.EmployeeMasters.FirstOrDefaultAsync(p => p.Empno == emp.Empno);
+
+        if (Update == null)
+        {
+            return new ServiceResponse<EmployeeMaster>
+            {
+                Success = false,
+                Message = "Data not found."
+            };
+        }
+        Update.Firstname = emp.Firstname;
+        Update.LastName = emp.LastName;
+        Update.AliasName = emp.AliasName;        
+        await _context.SaveChangesAsync();
+        return new ServiceResponse<EmployeeMaster> { Data = emp };
+    }
+}

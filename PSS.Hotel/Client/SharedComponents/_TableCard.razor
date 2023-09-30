@@ -1,0 +1,20 @@
+﻿
+@* <div class="bg-light m-1 border col-2">
+    <div class="border bg-info ">
+        <h4 style="color:whitesmoke; ">Table - @item.TableName</h4>
+    </div>
+    <div>
+        <span style="font-family:'Times New Roman', Times, serif; font-size:x-large">Qty - @item.TotalItemQty </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span style="font-family:'Times New Roman', Times, serif; font-size:x-large">Ready - @item.ReadyItemQty</span>
+    </div>
+    <h4 class="text-secondary">Pending - @item.PendingItemQty</h4>
+    <h4 class="text-secondary">Cancel - @item.CancelItemQty</h4>
+    <h4 class="text-secondary">Delivered- @item.DeliveredItemQty</h4>
+</div> *@
+
+
+
+@code {
+    [Parameter]   
+    public List<KotPendingTableModel> item { get; set; } = new List<KotPendingTableModel>() ;
+}

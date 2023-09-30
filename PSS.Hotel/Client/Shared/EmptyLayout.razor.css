@@ -1,0 +1,8 @@
+﻿body {
+    background-image: url(~/wwwroot/images/bg1.jpg); /* Replace with the actual path to your image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Optionally, you can set a background color in case the image doesn't load or cover the entire viewport. */
+    background-color: #f0f0f0; /* Replace with your desired background color. */
+}

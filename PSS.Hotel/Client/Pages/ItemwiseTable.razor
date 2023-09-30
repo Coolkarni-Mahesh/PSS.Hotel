@@ -1,0 +1,58 @@
+﻿@layout EmptyLayout
+@page "/ItemwiseTables"
+
+<_Header Title=@TitleName></_Header>
+
+<div class="col-12 p-3">
+    @if(itemwiseModels.Any())
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Table No</th>
+                    <th>Pending</th>
+                    <th>Cooking/About To Ready</th>
+                    <th>Cancel Item</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in itemwiseModels)
+                {
+                    <tr>
+                        <td>@item.ItemName</td>
+                        <td>@item.TableName</td>
+                        <td>@item.NoOfPendingItem</td>
+                        <td>@item.NoOfCookingItem</td>
+                        <td>@item.NoOfCancelItem</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+</div>
+
+
+
+
+
+
+
+
+
+@code {
+    string TitleName = "Itemwise Table";
+
+    List<ItemwiseModel> itemwiseModels = new List<ItemwiseModel>()
+    {
+        new ItemwiseModel{ItemName="Panner Tikka Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
+        new ItemwiseModel{ItemName="Roti", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
+        new ItemwiseModel{ItemName="Jeera Rice(Half)", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
+        new ItemwiseModel{ItemName="Shev Bhaji", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
+        new ItemwiseModel{ItemName="Panner Tikka Masala [Taste : Spice] [Message : No onino]", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
+        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
+    };
+
+
+}
