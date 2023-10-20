@@ -1,60 +1,40 @@
-﻿@layout EmptyLayout
+﻿@layout LoginLayOut
 @page "/"
 @inject NavigationManager NavigationManager
-<link rel="stylesheet" href="https://cdn.lineicons.com/2.0/LineIcons.css">
 
 
-<div class="vertical-center-row">
-<div class="container h-auto">
-    <div class="row align-text-top">
-        <div class="col-lg-6 col-12 mx-auto">
-            <div class="p-5 bg-white rounded shadow-lg">
+<div class="container my-5">
 
-                <EditForm Model="deviceRegistration" OnSubmit="HandleSubmit">
-                    <h5 class="mb-2 text-center pt-1">Server Registration</h5>
+    <div class="col-lg-5 col-12 mx-auto position-static d-flex justify-content-center">
+        <div class="p-5 bg-white shadow-lg" style="background:url('images/bg3.jpg') 50% 0 no-repeat fixed; background-size:cover; height:100%; width:100%; border-radius:40px;border: 1px solid#2b3990;">
 
-                    <label class="font-500">User Name</label>
-                    <InputText id="txtUserName" @bind-Value="deviceRegistration.Username" class="form-control mb-2" tabindex="0" placeholder="Enter User Name" ></InputText>
+            <EditForm Model="deviceRegistration" OnValidSubmit="HandleSubmit">
+                <h5 class="text-center">Server Registration</h5>
 
-                    <label class="font-500">Server IP Address</label>
-                        <InputText id="txtServerIPAddress" @bind-Value="deviceRegistration.ServerIPAddress" class="form-control mb-2" tabindex="1" placeholder="Enter Server IP Address"></InputText>
-
-                    <label class="font-500">Registration Date</label>
-                    <input name="" class="form-control mb-3" readonly type="text" value="@DateTime.Now.ToString("dd/MM/yyyy")">
-
-                    <button class="btn btn-primary w-100 shadow-lg mt-2" @onclick="JumpToLoginPage" tabindex="2">Register</button>
-
-                    <p class="mb-2 text-center pt-5">Copyright : Perfect Software Solution Pvt. Ltd.</p>
-                </EditForm>
-
-
-                @*
-                <form>
                 <label class="font-500">User Name</label>
-                <input name="" class="form-control form-control-lg mb-3">
+                <InputText id="txtUserName" tabindex="1" @bind-Value="deviceRegistration.Username" class="form-control mb-2" placeholder="Enter User Name" @onkeypress="@keydown" style="border-radius:20px; border: 1px solid#2b3990;"></InputText>
 
                 <label class="font-500">Server IP Address</label>
-                <input name="" class="form-control form-control-lg mb-3">
+                <InputText id="txtServerIPAddress" tabindex="2" @bind-Value="deviceRegistration.ServerIPAddress" class="form-control mb-2" placeholder="Enter Server IP Address" @onkeypress="@keydown" style="border-radius:20px; border: 1px solid#2b3990;"></InputText>
 
                 <label class="font-500">Registration Date</label>
-                <input name="" class="form-control form-control-lg mb-3" readonly type="text" value="@DateTime.Now.ToString("dd/MM/yyyy")">
+                <input name="" class="form-control mb-3" readonly type="text" value="@DateTime.Now.ToString("dd/MM/yyyy")" style= "border-radius:20px; border: 1px solid#2b3990;">
 
-                <button class="btn btn-primary btn-lg w-100 shadow-lg" @onclick="JumpToLoginPage">Register</button>
+                <button tabindex="3" type="button" class="btn btn-primary w-100 shadow-lg mt-2" @onclick="JumpToLoginPage" style="border-radius:20px; width:auto">Register</button>
 
-                <p class="mb-2 text-center pt-5">Copyright : Perfect Software Solution Pvt. Ltd.</p>
-                </form>*@
-
-
-
-            </div>
+                <div class="text-center pt-4" style="font-family:'Times New Roman', Times, serif; font-weight:100">Copyright : Perfect Software Solution Pvt. Ltd.</div>
+            </EditForm>
         </div>
     </div>
 </div>
-</div>
+
 
 @code
 {
-
+    string KeyPressed = "";
+    [Inject]
+    protected IJSRuntime JsRuntime { get; set; }
+    
     PSS.Hotel.Shared.Models.DeviceRegistration deviceRegistration = new PSS.Hotel.Shared.Models.DeviceRegistration();
 
     void JumpToLoginPage()
@@ -70,6 +50,24 @@
     void HandleSubmit()
     {
 
+    }
+
+    void Tab(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            
+            e.Key = "Tab";
+        }
+    }
+
+    public void keydown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs args)
+    {
+        KeyPressed = "Key Pressed is " + args.Key;
+        if (args.Key == "Enter")
+        {
+            JsRuntime.InvokeVoidAsync("onFocus", "txtUserName");
+        }
     }
 }
 

@@ -5,55 +5,72 @@
 
 <_Header Title=@TitleName></_Header>
 
-<div class="row border p-2 mt-2" style="background-color:azure;">
+<div style="background-color:azure;">
     @foreach (var item in _kotPendingTableModels)
     {
-        <div class="bg-light m-1 border col-2">
-            <div class="border bg-info ">
-                <h4 style="color:whitesmoke; ">Table - @item.TableName</h4>
+        <div style="display:inline-block">
+            <div class="bg-light m-1" style="border: 1px solid">
+                <div class="bg-info">
+                    <h6 style="text-align:center; color:black; margin:0px">Table - @item.TableName</h6>
+                </div>
+
+                <table style="margin:0px" class="table table-bordered border-primary table-sm table-striped">
+                    <thead style="background-color:#AFD3E2; color: black;">
+                        <tr>
+                            <th>Q</th>
+                            <th>R</th>
+                            <th>P</th>
+                            <th>C</th>
+                            <th>D</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@item.TotalItemQty</td>
+                            <td>@item.ReadyItemQty</td>
+                            <td>@item.PendingItemQty</td>
+                            <td>@item.CancelItemQty</td>
+                            <td>@item.DeliveredItemQty</td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
-            <div>
-                <span style="font-family:'Times New Roman', Times, serif; font-size:x-large">Qty - @item.TotalItemQty </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-family:'Times New Roman', Times, serif; font-size:x-large">Ready - @item.ReadyItemQty</span>
-            </div>
-            <h4 class="text-secondary">Pending - @item.PendingItemQty</h4>
-            <h4 class="text-secondary">Cancel - @item.CancelItemQty</h4>
-            <h4 class="text-secondary">Delivered- @item.DeliveredItemQty</h4>
         </div>
     }
 </div>
 
 @*<div class="bg-info p-2">
 
-</div>*@
+    </div>*@
 
 
 @code {
     string TitleName = "Kot Pending Table";
-  
-  
+
+
     List<KotPendingTableModel> _kotPendingTableModels = new List<KotPendingTableModel>()
     {
-        new KotPendingTableModel{ Id = 1,TableName = "1", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 2,TableName = "2", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 3,TableName = "3", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 4,TableName = "4", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 5,TableName = "5", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 6,TableName = "6", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 7,TableName = "7", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 8,TableName = "8", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 9,TableName = "9", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 10,TableName = "10", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 11,TableName = "11", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 12,TableName = "12", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 13,TableName = "13", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 14,TableName = "14", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 15,TableName = "15", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 16,TableName = "16", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 17,TableName = "17", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 18,TableName = "18", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 19,TableName = "19", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 20,TableName = "20", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 1,TableName = "1", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 2,TableName = "2", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 3,TableName = "3", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 4,TableName = "4", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 5,TableName = "5", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 6,TableName = "6", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 7,TableName = "7", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 8,TableName = "8", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 9,TableName = "9", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 10,TableName = "10", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 11,TableName = "11", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 12,TableName = "12", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 13,TableName = "13", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 14,TableName = "14", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 15,TableName = "15", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 16,TableName = "16", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 17,TableName = "17", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 18,TableName = "18", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 19,TableName = "19", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
+    new KotPendingTableModel{ Id = 20,TableName = "20", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
 
     };
 

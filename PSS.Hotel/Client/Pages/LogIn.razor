@@ -1,4 +1,4 @@
-﻿@layout EmptyLayout
+﻿@layout LoginLayOut
 @page "/Login"
 @using PSS.Hotel.Client.LOV;
 @inject NavigationManager NavigationManager
@@ -8,48 +8,37 @@
 *@
 @*<div class="demo-container ">*@
 <div class="container">
-    <div class="row">
-        <div class="col-lg-6 col-12 mx-auto">
-            <div class="text-center image-size-small position-relative">
-                <img src="https://annedece.sirv.com/Images/user-vector.jpg" class="rounded-circle p-2 bg-white">
-                <div class="icon-camera">
-                    <a href="" class="text-primary"><i class="lni lni-camera"></i></a>
-                </div>
-            </div>
-            <div class="p-5 bg-white rounded shadow-lg">
-                <h3 class="mb-2 text-center pt-5">Bagga International</h3>
+    <div class="col-lg-5 mx-auto my-auto">
+        <div class="text-center image-size-small position-relative">
+            <img src="/images/MK.jpg" class="rounded-circle p-4">           
+        </div>
+        <div class="p-4" style=" background:url('images/bg3.jpg') 50% 0 no-repeat fixed; background-size:cover; height:100%; width:100%; border-radius:40px; border: 1px solid#2b3990;">
+            <h4 class="mb-2 text-center pt-5">Bagga International</h4>
 
+            <EditForm Model="employeeMaster" OnSubmit="HandleSubmit">
 
-                <EditForm Model="employeeMaster" OnSubmit="HandleSubmit">
+                <label class="font-500">User</label>
+                <InputSelect @bind-Value="employeeMaster.Empno" class="form-select mb-2" Placeholder="Select Employee Name" style="border-radius:20px; border: 1px solid#2b3990;">
 
-                    <label class="font-500">User</label>
-                    <InputSelect @bind-Value="employeeMaster.Empno" class="form-select mb-2" Placeholder="Select Employee Name">
-                       
-                        @foreach (var emp in EmployeeMasterService.Employees)
-                        {
-                            <option value="@emp.Empno">@emp.AliasName</option>
-                        }
-                    </InputSelect>
+                    @foreach (var emp in EmployeeMasterService.Employees)
+                    {
+                        <option value="@emp.Empno">@emp.AliasName</option>
+                    }
+                </InputSelect>
 
-                    <label for="Password">Password</label>
-                    <InputText id="password" @bind-Value="employeeMaster.Password" type="password" class="form-control mb-2" placeholder="Password"></InputText>
+                <label for="Password">Password</label>
+                <InputText id="password" @bind-Value="employeeMaster.Password" type="password" class="form-control mb-2" placeholder="Password" style="border-radius:20px; border: 1px solid#2b3990;"></InputText>
 
-                    <label for="Sections">Section</label>
-                    <RadzenDropDown @bind-Value="value" Data="@sections" TextProperty="Key" ValueProperty="Value" class="form-select mb-4" Placeholder="Select Section"/>
-                    
-                    <RadzenStack AlignItems="AlignItems.Center">
-                        <p class="align-self-center py-0 AlignItem">Transaction Date : @DateTime.Now.ToString("dd/MM/yyyy") </p>
-                    </RadzenStack>
-                    <button class="btn btn-primary btn-lg w-100 shadow-lg" @onclick="JumpToDashboard">SIGN IN</button>
+                <label for="Sections">Section</label>
+                <RadzenDropDown @bind-Value="value" Data="@sections" TextProperty="Key" ValueProperty="Value" class="form-select mb-4" Placeholder="Select Section" style="border-radius:20px; border: 1px solid#2b3990;" />
 
-                    <p class="mb-2 text-center pt-5">Copyright : Perfect Software Solution Pvt. Ltd.</p>
-                </EditForm>
+                <RadzenStack AlignItems="AlignItems.Center">
+                    <p class="align-self-center py-0 AlignItem">Transaction Date : @DateTime.Now.ToString("dd/MM/yyyy") </p>
+                </RadzenStack>
+                <button class="btn btn-primary btn-lg w-100 shadow-lg" @onclick="JumpToDashboard" style="border-radius:20px;">SIGN IN</button>
 
-
-                <div class="text-center pt-4">
-                    @*   <p class="m-0">Do not have an account? <a href="" class="text-dark font-weight-bold">Sign Up</a></p>*@
-                </div>
-            </div>
+                <p class="mb-0 text-center pt-2" style="font-family:'Times New Roman', Times, serif; font-weight:bolder">Copyright : Perfect Software Solution Pvt. Ltd.</p>
+            </EditForm>        
         </div>
     </div>
 </div>

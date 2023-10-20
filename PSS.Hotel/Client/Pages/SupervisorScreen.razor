@@ -1,0 +1,232 @@
+﻿@layout EmptyLayout
+@page "/SupervisorScreen"
+<_Header Title=@TitleName></_Header>
+<div class="row alert-info m-1">
+    <div class="col-6  p-2 text-center">
+        <label class="fw-bolder form-label">Search by Table : </label>
+        <input class="form-control" style="display:inline-block; width:auto" type="text" @bind-value="@Search" placeholder="Enter Table Name" />
+    </div>
+    <div class="col-6  p-2 text-center">
+        <label class="fw-bolder form-label" style="display:inline-block">search by Status :</label>
+        <select class="form-select" style="display:inline-block; width:auto">
+            <option>All</option>
+            <option>Pending</option>
+            <option>Delivered</option>
+        </select>
+    </div>
+</div>
+
+
+
+@foreach (var item in k!)
+{
+    var kk = @supervisorScreenModels.Where(temp => temp.TableName == item).FirstOrDefault()!;
+    var tt = @supervisorScreenModels.Where(temp => temp.TableName == item).ToList();
+
+    <div class="m-1" style="display:inline-block">
+
+        <div style="font-size:x-large; font-weight:100" class="text-center">Table:@kk.TableName</div>
+        <div style="display:inline-block">Cap.:@kk.CaptainName</div>
+        <div style="display:inline-block">Waiter:@kk.WaiterName</div>
+        <div style="display:inline-block">Cust.:@kk.CustomerName</div>
+        <div style="display:inline-block">Time : @kk.OrderedTime.ToString("HH:mm tt")</div>
+
+
+        <table class="table table-bordered border-primary table-sm table-striped table-hover">
+
+            <thead style="background-color:blueviolet; color: white;">
+                <tr>
+                    <th>Item Name</th>
+                    <th>Pending</th>
+                    <th>Ready</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var i in tt)
+                {
+                    <tr>
+                        <td>@i.ItemName</td>
+                        <td>@i.PendingItemQty</td>
+                        <td>@i.Delivered</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+}
+
+
+<div class="col-3">
+    <table class="table table-bordered border-primary table-sm table-striped table-hover">
+        <thead style="background-color:blueviolet; color: white;">
+            <tr>
+                <th colspan="2">
+                    Panner Tikka Masala Qty 5
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    Pending
+                </td>
+                <td>
+                    <input type="number" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Ready
+                </td>
+                <td>
+                    <input type="number" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Delivered
+                </td>
+                <td>
+                    <input type="number" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Cancel
+                </td>
+                <td>
+                    <input type="number" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Status
+                </td>
+                <td>
+                    <select class="form-select">
+                        <option>Deliverd</option>
+                        <option>Pending</option>
+                        <option>Ready</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="col-6">
+    <table class="table table-bordered border-primary table-sm table-striped table-hover">
+        <thead style="background-color:blueviolet; color: white;">
+            <tr>
+                <th colspan="6">
+                    Table No : 2   KOT No : 16
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Item Name</td>
+                <td>Pending</td>
+                <td>Cooking</td>
+                <td>Ready</td>
+                <td>Deliverd</td>
+                <td>Cancel</td>
+            </tr>
+            <tr>
+                <td>Panner Tiikka Masala</td>
+                <td>10</td>
+                <td>3</td>
+                <td>2</td>
+                <td>5</td>
+                <td>1</td>
+            </tr> 
+            <tr>
+                <td>Panner Tiikka Masala</td>
+                <td>10</td>
+                <td>3</td>
+                <td>2</td>
+                <td>5</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Panner Tiikka Masala</td>
+                <td>10</td>
+                <td>3</td>
+                <td>2</td>
+                <td>5</td>
+                <td>1</td>
+            </tr>
+
+
+
+
+
+            <tr>
+                <td colspan="3">
+                    Status
+                </td>
+                <td colspan ="3">
+                    <select class="form-select">
+                        <option>Deliverd</option>
+                        <option>Pending</option>
+                        <option>Ready</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+@code {
+    string TitleName = "Supervisor Screen";
+    string? Search;
+
+
+    List<SupervisorScreenModel> supervisorScreenModels = new List<SupervisorScreenModel>()
+    {
+        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka Panner Tikka Panner Tikka Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
+        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3}
+    };
+
+    List<string>? k;
+    protected override void OnInitialized()
+    {
+
+        k = supervisorScreenModels.Select(temp => temp.TableName).Distinct().ToList()!;
+    }
+
+    // private  modalRef;
+    // private Task ShowModal()
+    // {
+    //     return modalRef.Show();
+    // }
+
+    // private Task HideModal()
+    // {
+    //     return modalRef.Hide();
+    // }
+}
