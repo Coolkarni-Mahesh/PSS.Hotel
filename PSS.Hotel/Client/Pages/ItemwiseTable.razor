@@ -3,16 +3,17 @@
 
 <_Header Title=@TitleName></_Header>
 
+<body>
 <div class="col-12 p-3 table-responsive">
     @if(itemwiseModels.Any())
     {
         <table class="table table-bordered border-primary table-sm table-striped table-hover">
             <thead  style="background-color:blueviolet; color: white;">
-                <tr>
-                    <th>Item Name</th>
+                <tr style="text-align:center">
+                    <th >Item Name</th>
                     <th>Table No</th>
                     <th>Pending</th>
-                    <th>Cooking/About To Ready</th>
+                    <th>Cooking</th>
                     <th>Cancel Item</th>
                 </tr>
             </thead>
@@ -21,10 +22,10 @@
                 {
                     <tr>
                         <td>@item.ItemName</td>
-                        <td>@item.TableName</td>
-                        <td>@item.NoOfPendingItem</td>
-                        <td>@item.NoOfCookingItem</td>
-                        <td>@item.NoOfCancelItem</td>
+                        <td style="text-align:center">@item.TableName</td>
+                        <td style="text-align:center">@item.NoOfPendingItem</td>
+                        <td style="text-align:center">@item.NoOfCookingItem</td>
+                        <td style="text-align:center">@item.NoOfCancelItem</td>
                     </tr>
                 }
             </tbody>
@@ -33,8 +34,10 @@
     }
 </div>
 
-
-
+<div>
+    <_Footer></_Footer>
+</div>
+</body>
 
 
 

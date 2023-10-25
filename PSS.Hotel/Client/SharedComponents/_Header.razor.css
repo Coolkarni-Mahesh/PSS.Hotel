@@ -1,0 +1,28 @@
+﻿body {
+}
+.Header-Background {
+    position: static;
+    background-color: #7752FE;
+    height: 46px;
+    padding: 1px
+}
+.Header-Title {
+    display: inline-block;
+    margin:10px;
+}
+
+div > h5 {
+    color:whitesmoke;
+}
+
+.Header-Elements {
+    display: inline-block;
+    color: whitesmoke;
+    float: right;
+    margin: 10px;
+}
+
+div > select {
+    max-width: 400px;
+    border: 1px solid #E55604
+}

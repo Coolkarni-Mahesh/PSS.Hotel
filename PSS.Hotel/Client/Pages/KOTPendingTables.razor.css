@@ -1,2 +1,59 @@
 ﻿body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#container1 {
+    min-height: 100%;
+    position: relative;
+}
+
+#header {
+    background: #ff0;
+    padding: 10px;
+}
+
+#body {
+    padding: 10px;
+    padding-bottom: 60px; /* Height of the footer */
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;  
+}
+
+
+
+#container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
+    /* fallback height */
+    min-height: 100vh;
+    /* new small viewport height for modern browsers */
+    min-height: 100vh;
+}
+article {
+    background-image: url('images/bg31.jpg');
+}
+
+#flex-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+
+@media(max-width:600px) {
+    .myClss{
+       
+        align-content:center;
+        align-items:center;
+        text-align:center;
+    }
 }

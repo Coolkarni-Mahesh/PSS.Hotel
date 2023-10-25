@@ -1,0 +1,20 @@
+﻿body {
+}
+
+.flex-container{
+    display:flex;
+    flex-direction:row;
+    border-radius:0px;
+}
+
+.card {
+    background: #7752FE;
+    color: whitesmoke;   
+    height: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding:5px;
+    
+}
+
+

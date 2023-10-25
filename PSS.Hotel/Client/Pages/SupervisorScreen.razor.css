@@ -1,0 +1,49 @@
+﻿body {
+}
+
+.flex-container {
+    position: static;
+    top: 50%;
+    background-color: #D6E4E5;
+    height: 46px;
+    padding: 1px;
+    align-content: center;
+}
+
+body {
+}
+
+.Header-Background {
+    position: static;
+    top: 50%;
+    background-color: #7752FE;
+    height: 46px;
+    padding: 1px
+}
+
+.Header-Title {
+    display: inline-block;
+    margin: 10px;
+}
+
+div > h5 {
+    color: whitesmoke;
+}
+
+.Header-Elements {
+    display: inline-block;
+    color: whitesmoke;
+    margin: 2px;
+}
+
+div > select {
+    width: auto;
+   
+    border: 1px solid #E55604
+}
+
+
+
+
+
+

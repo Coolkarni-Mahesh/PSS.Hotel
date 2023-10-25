@@ -3,46 +3,50 @@
 @inject NavigationManager NavigationManager
 @inject DialogService ds
 
-<_Header Title=@TitleName></_Header>
+<div id="container">
 
-<div style="background-color:azure;">
-    @foreach (var item in _kotPendingTableModels)
-    {
-        <div style="display:inline-block">
-            <div class="bg-light m-1" style="border: 1px solid">
-                <div class="bg-info">
-                    <h6 style="text-align:center; color:black; margin:0px">Table - @item.TableName</h6>
+    <header>
+        <_Header Title=@TitleName></_Header>
+    </header>
+
+    <article>
+        <div id="flex-container" class="myClss">
+            @foreach (var item in _kotPendingTableModels)
+            {
+                <div class="bg-light m-1" style="border: 1px solid">
+                    <div style="background-color:#FFCC70">
+                        <h6 style="text-align:center; color:black; margin:0px">Table - @item.TableName</h6>
+                    </div>
+
+                    <table style="margin:0px" class="table table-bordered border-primary table-sm table-striped">
+                        <thead style="background-color:#AFD3E2; color: black;">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Ready</th>
+                                <th>Pending</th>
+                                <th>Cancel</th>
+                                <th>Deliver</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="text-align:center; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                                <td>@item.TotalItemQty</td>
+                                <td>@item.ReadyItemQty</td>
+                                <td>@item.PendingItemQty</td>
+                                <td>@item.CancelItemQty</td>
+                                <td>@item.DeliveredItemQty</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <table style="margin:0px" class="table table-bordered border-primary table-sm table-striped">
-                    <thead style="background-color:#AFD3E2; color: black;">
-                        <tr>
-                            <th>Q</th>
-                            <th>R</th>
-                            <th>P</th>
-                            <th>C</th>
-                            <th>D</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>@item.TotalItemQty</td>
-                            <td>@item.ReadyItemQty</td>
-                            <td>@item.PendingItemQty</td>
-                            <td>@item.CancelItemQty</td>
-                            <td>@item.DeliveredItemQty</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </div>
+            }
         </div>
-    }
+    </article>
+
+    <footer>
+        <_Footer></_Footer>
+    </footer>
 </div>
-
-@*<div class="bg-info p-2">
-
-    </div>*@
 
 
 @code {

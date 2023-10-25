@@ -1,46 +1,67 @@
 ﻿@layout EmptyLayout
 @page "/SupervisorScreen"
+
+
+
 <_Header Title=@TitleName></_Header>
-<div class="row alert-info m-1">
-    <div class="col-6  p-2 text-center">
-        <label class="fw-bolder form-label">Search by Table : </label>
-        <input class="form-control" style="display:inline-block; width:auto" type="text" @bind-value="@Search" placeholder="Enter Table Name" />
+
+
+<div class="flex-container">
+
+    <div class="Header-Elements" style="float:left;">
+        <label class="form-label" style="margin-left:5px; color:black">Search by Table : </label>
+        <input class="form-control" style="display:inline-block; margin-left:5px; width:auto; border:1px solid black" type="text" @bind-value="@Search" placeholder="Enter Table Name" />
     </div>
-    <div class="col-6  p-2 text-center">
-        <label class="fw-bolder form-label" style="display:inline-block">search by Status :</label>
-        <select class="form-select" style="display:inline-block; width:auto">
+
+    <div class="Header-Elements" style="float:right">
+        <label class="form-label" style="display:inline-block;color:black">search by Status :</label>
+        <select class="form-select" style="display:inline-block;border:1px solid black">
             <option>All</option>
             <option>Pending</option>
             <option>Delivered</option>
         </select>
     </div>
+
 </div>
 
 
 
-@foreach (var item in k!)
+
+
+@foreach (var item in TableName!)
 {
     var kk = @supervisorScreenModels.Where(temp => temp.TableName == item).FirstOrDefault()!;
     var tt = @supervisorScreenModels.Where(temp => temp.TableName == item).ToList();
 
     <div class="m-1" style="display:inline-block">
 
-        <div style="font-size:x-large; font-weight:100" class="text-center">Table:@kk.TableName</div>
-        <div style="display:inline-block">Cap.:@kk.CaptainName</div>
-        <div style="display:inline-block">Waiter:@kk.WaiterName</div>
-        <div style="display:inline-block">Cust.:@kk.CustomerName</div>
-        <div style="display:inline-block">Time : @kk.OrderedTime.ToString("HH:mm tt")</div>
 
+        <table class="table border table-bordered border-primary table-sm table-striped table-hover table-responsive">
 
-        <table class="table table-bordered border-primary table-sm table-striped table-hover">
+            <tr style="background-color:blueviolet; color: white; text-align:center; border:1px solid black">
+                <td>Table</td>
+                <td>Captain</td>
+                <td>Waiter</td>
+                <td>Customer</td>
+                <td>Time</td>
+            </tr>
 
-            <thead style="background-color:blueviolet; color: white;">
-                <tr>
-                    <th>Item Name</th>
-                    <th>Pending</th>
-                    <th>Ready</th>
-                </tr>
-            </thead>
+            <tr style="text-align:center; border:1px solid black; border-top-color:black">
+                <td style="font-size:x-large">@kk.TableName</td>
+                <td style="border:1px solid black">@kk.CaptainName</td>
+                <td style="border:1px solid black">@kk.WaiterName</td>
+                <td style="border:1px solid black">@kk.CustomerName</td>
+                <td style="border:1px solid black">@kk.OrderedTime.ToString("HH:mm tt")</td>
+            </tr>
+
+            <tr style="text-align:center; background-color:yellowgreen; border:1px solid blue;">
+                <td style="border:1px solid black">Item Name</td>
+                <td style="border:1px solid black">Pending</td>
+                <td style="border:1px solid black">Ready</td>
+                <td style="border:1px solid black">None</td>
+                <td style="border:1px solid black">Edit</td>
+            </tr>
+
             <tbody>
 
                 @foreach (var i in tt)
@@ -49,13 +70,25 @@
                         <td>@i.ItemName</td>
                         <td>@i.PendingItemQty</td>
                         <td>@i.Delivered</td>
+                        <td>none</td>
+                        <td>Edit</td>
                     </tr>
                 }
 
             </tbody>
+
+            <tr>
+                <td colspan="5"><button class="form-control btn btn-primary">Update KOT</button></td>
+            </tr>
         </table>
     </div>
 }
+
+
+
+
+
+
 
 
 <div class="col-3">
@@ -143,7 +176,7 @@
                 <td>2</td>
                 <td>5</td>
                 <td>1</td>
-            </tr> 
+            </tr>
             <tr>
                 <td>Panner Tiikka Masala</td>
                 <td>10</td>
@@ -169,7 +202,7 @@
                 <td colspan="3">
                     Status
                 </td>
-                <td colspan ="3">
+                <td colspan="3">
                     <select class="form-select">
                         <option>Deliverd</option>
                         <option>Pending</option>
@@ -182,7 +215,9 @@
 </div>
 
 
-
+<div>
+    <_Footer></_Footer>
+</div>
 
 
 
@@ -212,11 +247,11 @@
         new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3}
     };
 
-    List<string>? k;
+    List<string>? TableName;
     protected override void OnInitialized()
     {
 
-        k = supervisorScreenModels.Select(temp => temp.TableName).Distinct().ToList()!;
+        TableName = supervisorScreenModels.Select(temp => temp.TableName).Distinct().ToList()!;
     }
 
     // private  modalRef;

@@ -1,0 +1,13 @@
+﻿
+body {
+    background: url('images/bg11.jpg') 50% 0 fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.flex-container {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    height: 100vh;
+}
