@@ -32,4 +32,6 @@ public partial class DailyTableDetail
     public string? StartTime { get; set; }
 
     public string? Kotmsg { get; set; }
+
+    
 }

@@ -1,6 +1,7 @@
 global using PSS.Hotel.Shared;
 global using PSS.Hotel.Shared.Models;
 using Microsoft.EntityFrameworkCore;
+using PSS.Hotel.Server.Services.DailyTableDetailService;
 using PSS.Hotel.Server.Services.EmployeeMasterService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IEmployeeMasterService, EmployeeMasterService>();
-
+builder.Services.AddScoped<IDailyTableDetailService,DailyTableDetailService>();
 
 var app = builder.Build();
 
