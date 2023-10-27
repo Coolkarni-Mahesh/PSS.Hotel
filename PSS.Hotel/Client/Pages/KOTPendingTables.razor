@@ -22,19 +22,20 @@
                         <thead style="background-color:#AFD3E2; color: black;">
                             <tr>
                                 <th>Qty</th>
+                                <th>Delivered</th>
                                 <th>Ready</th>
                                 <th>Pending</th>
                                 <th>Cancel</th>
-                                <th>Deliver</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
                             <tr style="text-align:center; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
                                 <td>@item.TotalItemQty</td>
+                                <td>@item.DeliveredItemQty</td>
                                 <td>@item.ReadyItemQty</td>
                                 <td>@item.PendingItemQty</td>
-                                <td>@item.CancelItemQty</td>
-                                <td>@item.DeliveredItemQty</td>
+                                <td>@item.CancelItemQty</td>                               
                             </tr>
                         </tbody>
                     </table>

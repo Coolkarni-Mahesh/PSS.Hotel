@@ -12,4 +12,5 @@ public interface IEmployeeMasterService
     Task<EmployeeMaster> Add(EmployeeMaster emp);
     Task<EmployeeMaster> Update(EmployeeMaster emp);
     Task Delete(EmployeeMaster emp);
+    Task<bool> IsAuthoriezed(string Username, string Password);
 }

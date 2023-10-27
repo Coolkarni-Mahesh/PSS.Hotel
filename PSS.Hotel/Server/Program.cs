@@ -1,7 +1,7 @@
 global using PSS.Hotel.Shared;
 global using PSS.Hotel.Shared.Models;
 using Microsoft.EntityFrameworkCore;
-using PSS.Hotel.Server.Services;
+using PSS.Hotel.Server.Services.EmployeeMasterService;
 
 var builder = WebApplication.CreateBuilder(args);
 

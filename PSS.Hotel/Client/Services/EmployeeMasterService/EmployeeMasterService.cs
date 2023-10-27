@@ -45,4 +45,11 @@ public class EmployeeMasterService : IEmployeeMasterService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<bool> IsAuthoriezed(string Username, string Password)
+    {
+        var result = await _http.GetFromJsonAsync<bool>($"api/employeeMaster/Authorize?Username={Username}&Password={Password}");    
+        return result;
+     
+    }
 }

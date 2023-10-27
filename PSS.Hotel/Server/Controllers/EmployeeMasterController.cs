@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PSS.Hotel.Server.Services;
+using PSS.Hotel.Server.Services.EmployeeMasterService;
 
 namespace PSS.Hotel.Server.Controllers;
 
@@ -21,5 +21,11 @@ public class EmployeeMasterController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("Authorize")]
+    public async Task<bool> IsAuthorized(string Username, String Password)
+    {
+        var result = await _employeeMasterService.IsAuthorized(Username, Password);
+        return result;
+    }
 
 }

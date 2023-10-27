@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
-namespace PSS.Hotel.Server.Services;
+namespace PSS.Hotel.Server.Services.EmployeeMasterService;
 
 public class EmployeeMasterService : IEmployeeMasterService
 {
@@ -48,7 +49,7 @@ public class EmployeeMasterService : IEmployeeMasterService
         var response = new ServiceResponse<EmployeeMaster>();
         EmployeeMaster? emp = null;
         emp = await _context.EmployeeMasters.FirstOrDefaultAsync(p => p.Empno == Id);
-     
+
         if (emp == null)
         {
             response.Success = false;
@@ -59,6 +60,22 @@ public class EmployeeMasterService : IEmployeeMasterService
             response.Data = emp;
         }
         return response;
+    }
+
+    public async Task<bool> IsAuthorized(string Username, string Password)
+    {
+        bool Auth = false;
+
+        var k = await _context.EmployeeMasters.Where(temp => temp.Firstname == Username && temp.Password == Password).ToListAsync();
+        if (k.Count > 0)
+        {
+            Auth = true;
+        }
+        else
+        {
+            Auth = false;
+        }
+        return Auth;
     }
 
     public async Task<ServiceResponse<EmployeeMaster>> Update(EmployeeMaster emp)
@@ -75,7 +92,7 @@ public class EmployeeMasterService : IEmployeeMasterService
         }
         Update.Firstname = emp.Firstname;
         Update.LastName = emp.LastName;
-        Update.AliasName = emp.AliasName;        
+        Update.AliasName = emp.AliasName;
         await _context.SaveChangesAsync();
         return new ServiceResponse<EmployeeMaster> { Data = emp };
     }
