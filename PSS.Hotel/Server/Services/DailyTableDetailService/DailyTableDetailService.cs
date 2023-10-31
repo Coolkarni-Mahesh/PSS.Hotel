@@ -14,7 +14,7 @@ public class DailyTableDetailService : IDailyTableDetailService
     {
         var response = new ServiceResponse<List<DailyTableDetail>>()
         {
-            Data = await _context.DailyTableDetails.ToListAsync()
+            Data = await _context.DailyTableDetails.AsNoTracking().ToListAsync()
         };
        return response;
     }

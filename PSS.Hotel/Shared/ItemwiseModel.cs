@@ -7,4 +7,5 @@ public class ItemwiseModel
     public int NoOfPendingItem { get; set; }
     public int NoOfCookingItem { get; set; }
     public int NoOfCancelItem { get; set; }
+    public string? KOTMessage { get; set; }
 }

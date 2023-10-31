@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PSS.Hotel.Shared.Models;
 
@@ -9,7 +10,7 @@ public partial class DailyTableDetail
 
     public int? TableNo { get; set; }
 
-    public int? Itemcode { get; set; }
+   
 
     public int? Order { get; set; }
 
@@ -33,5 +34,16 @@ public partial class DailyTableDetail
 
     public string? Kotmsg { get; set; }
 
+    public int Ready { get; set; }
+    public int Pending { get; set; }
+    public int Delivered { get; set; }
+    public int Cooking { get; set; }
+
+    [ForeignKey("Itemcode")]
+    public ItemMaster? itemMaster { get; set; }
     
+    public int? Itemcode { get; set; }
+
+   
+
 }

@@ -1,42 +1,43 @@
 ﻿@layout EmptyLayout
 @page "/ItemwiseTables"
+@inject IItemwiseTableService ItemwiseTableService
 
 <_Header Title=@TitleName></_Header>
 
 <body>
-<div class="col-12 p-3 table-responsive">
-    @if(itemwiseModels.Any())
-    {
-        <table class="table table-bordered border-primary table-sm table-striped table-hover">
-            <thead  style="background-color:blueviolet; color: white;">
-                <tr style="text-align:center">
-                    <th >Item Name</th>
-                    <th>Table No</th>
-                    <th>Pending</th>
-                    <th>Cooking</th>
-                    <th>Cancel Item</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in itemwiseModels)
-                {
-                    <tr>
-                        <td>@item.ItemName</td>
-                        <td style="text-align:center">@item.TableName</td>
-                        <td style="text-align:center">@item.NoOfPendingItem</td>
-                        <td style="text-align:center">@item.NoOfCookingItem</td>
-                        <td style="text-align:center">@item.NoOfCancelItem</td>
+    <div class="col-12 p-3 table-responsive">
+        @if (ItemwiseTableModelList1.Any())
+        {
+            <table class="table table-bordered border-primary table-sm table-striped table-hover">
+                <thead style="background-color:blueviolet; color: white;">
+                    <tr style="text-align:center">
+                        <th>Item Name</th>
+                        <th>Table No</th>
+                        <th>Pending</th>
+                        <th>Cooking</th>
+                        <th>Cancel Item</th>
                     </tr>
-                }
-            </tbody>
+                </thead>
+                <tbody>
+                    @foreach (var item in ItemwiseTableModelList1)
+                    {
+                        <tr>
+                            <td>@item.ItemName</td>
+                            <td style="text-align:center">@item.TableName</td>
+                            <td style="text-align:center">@item.NoOfPendingItem</td>
+                            <td style="text-align:center">@item.NoOfCookingItem</td>
+                            <td style="text-align:center">@item.NoOfCancelItem</td>
+                        </tr>
+                    }
+                </tbody>
 
-        </table>
-    }
-</div>
+            </table>
+        }
+    </div>
 
-<div>
-    <_Footer></_Footer>
-</div>
+    <div>
+        <_Footer></_Footer>
+    </div>
 </body>
 
 
@@ -47,28 +48,73 @@
 @code {
     string TitleName = "Itemwise Table";
 
-    List<ItemwiseModel> itemwiseModels = new List<ItemwiseModel>()
-    {
-        new ItemwiseModel{ItemName="Panner Tikka Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Roti", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Jeera Rice(Half)", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Shev Bhaji", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Masala [Taste : Spice] [Message : No onino]", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-        new ItemwiseModel{ItemName="Panner Tikka Maharaja Masala Panner Tikka Maharaja Masala", TableName="17,2,5", NoOfPendingItem=1,NoOfCookingItem=2,NoOfCancelItem=1},
-    
-    
-    };
+    List<ItemwiseModel> ItemwiseTableModelList = new List<ItemwiseModel>();
+    List<ItemwiseModel> ItemwiseTableModelList1 = new List<ItemwiseModel>();
 
+    protected override async Task OnInitializedAsync()
+    {
+        await ItemwiseTableService.GetAll();
+        Load();
+
+    }
+
+    private void Load()
+    {
+        foreach (var item in ItemwiseTableService.DailyTableDetails)
+        {
+            ItemwiseModel ItemwiseTable = new ItemwiseModel()
+                {
+
+                    ItemName = item.itemMaster?.ItemName!,
+                    TableName = item.TableNo.ToString(),
+                    NoOfPendingItem = item.Pending,
+                    NoOfCookingItem = item.Cooking,
+                    NoOfCancelItem = Convert.ToInt32(item.Cancel),
+                    KOTMessage = item.Kotmsg
+                };
+            ItemwiseTableModelList.Add(ItemwiseTable);
+        }
+
+
+        var k = ItemwiseTableModelList.OrderBy(temp => temp.ItemName)
+        .GroupBy(ItemwiseTableModelList => new { ItemwiseTableModelList.ItemName, ItemwiseTableModelList.KOTMessage })
+        .Select(group => new
+        {
+
+            ItemName = group.Key.ItemName + ((group.Key.KOTMessage == "-") ? "" : "         [ " + group.Key.KOTMessage + " ] "),
+            TableName = string.Join(", ", group.Select(item => item.TableName).Distinct()),
+            NoOfPendingItem = group.Sum(item => item.NoOfPendingItem),
+            NoOfCookingItem = group.Sum(item => item.NoOfCookingItem),
+            NoOfCancelItem = group.Sum(item => item.NoOfCancelItem)
+
+        });
+
+        // var k = from dailyTableDetail in ItemwiseTableModelList
+        //         group dailyTableDetail by dailyTableDetail.ItemName into grouped
+        //         select new
+        //         {
+        //             ItemName = grouped.Key,
+
+        //             NoOfPendingItem = grouped.Sum(item => item.NoOfPendingItem),
+        //             NoOfCookingItem = grouped.Sum(item => item.NoOfCookingItem),
+        //             NoOfCancelItem = grouped.Sum(item => item.NoOfCancelItem)
+
+        //         } ;
+
+
+        foreach (var item in k)
+        {
+
+            ItemwiseModel model = new ItemwiseModel()
+                {
+                    ItemName = item.ItemName,
+                    TableName = item.TableName,
+                    NoOfPendingItem = item.NoOfPendingItem,
+                    NoOfCookingItem = item.NoOfCookingItem,
+                    NoOfCancelItem = item.NoOfCancelItem
+                };
+            ItemwiseTableModelList1.Add(model);
+        }
+    }
 
 }

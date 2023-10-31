@@ -12,8 +12,8 @@ using PSS.Hotel.Shared.Models;
 namespace PSS.Hotel.Server.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    [Migration("20231027121816_DailyTableDetail")]
-    partial class DailyTableDetail
+    [Migration("20231030053828_addedItemCodeForiegnKey")]
+    partial class addedItemCodeForiegnKey
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -4026,6 +4026,12 @@ namespace PSS.Hotel.Server.Migrations
                         .HasColumnType("single")
                         .HasDefaultValueSql("0");
 
+                    b.Property<int>("Cooking")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Delivered")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("Itemcode")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -4051,11 +4057,17 @@ namespace PSS.Hotel.Server.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValueSql("0");
 
+                    b.Property<int>("Pending")
+                        .HasColumnType("integer");
+
                     b.Property<float?>("Rate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("single")
                         .HasColumnName("rate")
                         .HasDefaultValueSql("0");
+
+                    b.Property<int>("Ready")
+                        .HasColumnType("integer");
 
                     b.Property<float?>("SnacksRate")
                         .ValueGeneratedOnAdd()
@@ -20488,6 +20500,15 @@ namespace PSS.Hotel.Server.Migrations
                     b.HasIndex(new[] { "Unitcode" }, "unitcode");
 
                     b.ToTable("Wastagedetail", (string)null);
+                });
+
+            modelBuilder.Entity("PSS.Hotel.Shared.Models.DailyTableDetail", b =>
+                {
+                    b.HasOne("PSS.Hotel.Shared.Models.ItemMaster", "itemMaster")
+                        .WithMany()
+                        .HasForeignKey("Itemcode");
+
+                    b.Navigation("itemMaster");
                 });
 #pragma warning restore 612, 618
         }

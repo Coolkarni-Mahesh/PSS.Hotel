@@ -3,6 +3,7 @@ using System;
 using EntityFrameworkCore.Jet.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSS.Hotel.Shared.Models;
 
@@ -11,9 +12,11 @@ using PSS.Hotel.Shared.Models;
 namespace PSS.Hotel.Server.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20231028092312_DailyTableDetailCooking")]
+    partial class DailyTableDetailCooking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20497,15 +20500,6 @@ namespace PSS.Hotel.Server.Migrations
                     b.HasIndex(new[] { "Unitcode" }, "unitcode");
 
                     b.ToTable("Wastagedetail", (string)null);
-                });
-
-            modelBuilder.Entity("PSS.Hotel.Shared.Models.DailyTableDetail", b =>
-                {
-                    b.HasOne("PSS.Hotel.Shared.Models.ItemMaster", "itemMaster")
-                        .WithMany()
-                        .HasForeignKey("Itemcode");
-
-                    b.Navigation("itemMaster");
                 });
 #pragma warning restore 612, 618
         }

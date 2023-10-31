@@ -1,8 +1,13 @@
+
 global using PSS.Hotel.Shared;
 global using PSS.Hotel.Shared.Models;
-using Microsoft.EntityFrameworkCore;
-using PSS.Hotel.Server.Services.DailyTableDetailService;
-using PSS.Hotel.Server.Services.EmployeeMasterService;
+global using Microsoft.EntityFrameworkCore;
+global using PSS.Hotel.Server.Services.DailyTableDetailService;
+global using PSS.Hotel.Server.Services.EmployeeMasterService;
+global using PSS.Hotel.Server.Services.ItemwiseTableService;
+using Microsoft.AspNetCore.ResponseCompression;
+using PSS.Hotel.Server.Hubs;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,17 +15,28 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ModelContext>(options =>
 options.UseJet(builder!.Configuration.GetConnectionString("AccessConnection")));
 
-
+builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddResponseCompression(option =>
+{
+    option.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        new[]
+        {
+            "application/octet-stream"
+        });
+});
+
 builder.Services.AddScoped<IEmployeeMasterService, EmployeeMasterService>();
 builder.Services.AddScoped<IDailyTableDetailService,DailyTableDetailService>();
+builder.Services.AddScoped<IItemwiseTableService, ItemwiseTableService>();
 
 var app = builder.Build();
 
+app.UseResponseCompression();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -46,6 +62,7 @@ app.UseRouting();
 
 app.MapRazorPages();
 app.MapControllers();
+app.MapHub<DailyTableDetailHub>("/DailyTabledetailHub");
 app.MapFallbackToFile("index.html");
 
 app.Run();

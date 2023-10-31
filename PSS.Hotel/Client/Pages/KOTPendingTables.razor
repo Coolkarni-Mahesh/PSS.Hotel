@@ -1,5 +1,6 @@
 ﻿@layout EmptyLayout
 @page "/KOTPendingTables"
+@using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager NavigationManager
 @inject DialogService ds
 @inject IDailyTableDetailService DailyTableDetailService
@@ -12,7 +13,6 @@
 
     <article>
         <div id="flex-container" class="myClss">
-            @*    @foreach (var item in _kotPendingTableModels) *@
             @foreach (var item in KotPendingList1)
             {
                 <div class="bg-light m-1" style="border: 1px solid">
@@ -51,56 +51,52 @@
     </footer>
 
 </div>
-<div>
-    @*  @foreach (var item in )
-    {
-    <span>@item.</span>
-    } *@
-</div>
+
 
 
 @code {
     string TitleName = "Kot Pending Table";
     List<KotPendingTableModel> KotPendingList = new List<KotPendingTableModel>();
-   
+
     List<KotPendingTableModel> KotPendingList1 = new List<KotPendingTableModel>();
 
 
+    private HubConnection? hubConnection;
 
-
-    protected override async Task OnInitializedAsync()
+    private void CallLoadData()
+    {
+        Task.Run(async () =>
+        {
+            await LoadData();
+        });
+    }
+    protected async Task LoadData()
     {
         await DailyTableDetailService.GetAll();
-
         foreach (var item in DailyTableDetailService.DailyTableDetails)
         {
             KotPendingTableModel KOT = new KotPendingTableModel()
                 {
                     TableName = item.TableNo.ToString(),
                     TotalItemQty = (int)item.Order!,
-                    ReadyItemQty = 0,
-                    PendingItemQty =0,
-                    CancelItemQty = Convert.ToInt32(item.Cancel),
-                    DeliveredItemQty = 0
+                    ReadyItemQty = item.Ready,
+                    PendingItemQty = item.Pending,
+                    CancelItemQty = (int)item.Cancel!,
+                    DeliveredItemQty = item.Delivered
                 };
             KotPendingList.Add(KOT);
         }
-
-
-
         var k = from dailyTableDetail in KotPendingList
-                  group dailyTableDetail by dailyTableDetail.TableName into grouped
-                  select new
-                  {
-                      TableName = grouped.Key,
-                      TotalItemQty = grouped.Sum(item => item.TotalItemQty),
-                      CancelItemQty = grouped.Sum(item => item.CancelItemQty),
-                      ReadyItemQty = grouped.Sum(item => item.ReadyItemQty),
-                      PendingItemQty = grouped.Sum(item => item.PendingItemQty),
-                      DeliveredItemQty = grouped.Sum(item => item.DeliveredItemQty)
-                  };
-
-
+                group dailyTableDetail by dailyTableDetail.TableName into grouped
+                select new
+                {
+                    TableName = grouped.Key,
+                    TotalItemQty = grouped.Sum(item => item.TotalItemQty),
+                    CancelItemQty = grouped.Sum(item => item.CancelItemQty),
+                    ReadyItemQty = grouped.Sum(item => item.ReadyItemQty),
+                    PendingItemQty = grouped.Sum(item => item.PendingItemQty),
+                    DeliveredItemQty = grouped.Sum(item => item.DeliveredItemQty)
+                };
         foreach (var item in k)
         {
 
@@ -116,39 +112,26 @@
             KotPendingList1.Add(KOT);
         }
 
+        StateHasChanged();
+    }
 
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/DailyTabledetailHub")).Build();
+        hubConnection.On("ReceiveMessage", () =>
+        {
+            CallLoadData();
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+        await LoadData();
+    }
+
+    public void Dispose()
+    {
+        _ = hubConnection!.DisposeAsync();
     }
 
 
-    /*
-    async Task ButtonClicked()
-        {
-        var result = await ds.Confirm("Are you sure want to close ? ");
-    }
-
-    List<KotPendingTableModel> _kotPendingTableModels = new List<KotPendingTableModel>()
-        {
-        new KotPendingTableModel{ Id = 1,TableName = "1", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 2,TableName = "2", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 3,TableName = "3", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 4,TableName = "4", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 5,TableName = "5", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 6,TableName = "6", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 7,TableName = "7", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 8,TableName = "8", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 9,TableName = "9", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 10,TableName = "10", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 11,TableName = "11", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 12,TableName = "12", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 13,TableName = "13", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 14,TableName = "14", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 15,TableName = "15", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 16,TableName = "16", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 17,TableName = "17", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 18,TableName = "18", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 19,TableName = "19", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-        new KotPendingTableModel{ Id = 20,TableName = "20", TotalItemQty = 5, ReadyItemQty =3, PendingItemQty = 2, CancelItemQty = 1,DeliveredItemQty = 5},
-
-    };
-    */
 }
