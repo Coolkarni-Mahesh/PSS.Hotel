@@ -1,10 +1,11 @@
 ﻿@layout EmptyLayout
 @page "/SupervisorScreen"
-
-
+@inject IDailyTableService DailyTableService
+@inject IDailyTableDetailService DailyTableDetailService
+@inject IEmployeeMasterService EmployeeMasterService
+@inject IItemwiseTableService ItemwiseTableService
 
 <_Header Title=@TitleName></_Header>
-
 
 <div class="flex-container">
 
@@ -25,211 +26,73 @@
 </div>
 
 
+ 
 
-
-
-@foreach (var item in TableName!)
+@foreach (var kk in DailyTableService.DailyTables)
 {
-    var kk = @supervisorScreenModels.Where(temp => temp.TableName == item).FirstOrDefault()!;
-    var tt = @supervisorScreenModels.Where(temp => temp.TableName == item).ToList();
+    @* KOT-Wise Item List *@
+    var tt = @ItemwiseTableModelList.Where(temp => temp.TableName == kk.TableId.ToString()).ToList();
+    var KotNoList = tt.Select(temp => temp.KotNo).Distinct().ToList();
+    foreach (var k in KotNoList)
+    {     
+        var pp = tt.Where(temp => temp.KotNo == k).ToList();
+        
+        <div class="m-1" style="display:inline-flex; align-items:flex-start">
+            <table class="table border table-bordered border-primary table-sm table-striped table-hover table-responsive">
 
-    <div class="m-1" style="display:inline-block">
+                <tr style="background-color:blueviolet; color: white; text-align:center; border:1px solid black">
+                    <td>Table</td>
+                    <td style="padding-left:10px; padding-right:10px">KOT-NO</td>
+                    <td>Captain</td>
+                    <td>Waiter</td>
+                    <td>Customer</td>
+                    <td>Time</td>
+                </tr>
 
+                <tr style="text-align:center; border:1px solid black; border-top-color:black">
+                    <td style="font-size:x-large">@pp[0].TableName</td>
+                    <td style="border:1px solid black">@k</td>
+                    <td style="border:1px solid black">@pp[0].CaptainName</td>
+                    <td style="border:1px solid black">@pp[0].WaiterName</td>
+                    <td style="border:1px solid black">@pp[0].CustomerName</td>
+                    <td style="border:1px solid black">@pp[0].StartTime.ToString("HH:mm tt")</td>
+                </tr>
 
-        <table class="table border table-bordered border-primary table-sm table-striped table-hover table-responsive">
+                <tr style="text-align:center; background-color:yellowgreen; border:1px solid blue;">
+                    <td style="border:1px solid black;min-width:180px">Item Name</td>
+                    <td style="border:1px solid black;min-width:50px">Pending</td>
+                    <td style="border:1px solid black;min-width:80px">Ready</td>
+                    <td style="border:1px solid black;min-width:80px">Delivered</td>
+                    <td style="border:1px solid black;min-width:80px">Cooking</td>
+                    <td style="border:1px solid black;min-width:80px">Edit</td>
+                </tr>
 
-            <tr style="background-color:blueviolet; color: white; text-align:center; border:1px solid black">
-                <td>Table</td>
-                <td>Captain</td>
-                <td>Waiter</td>
-                <td>Customer</td>
-                <td>Time</td>
-            </tr>
+                <tbody>
 
-            <tr style="text-align:center; border:1px solid black; border-top-color:black">
-                <td style="font-size:x-large">@kk.TableName</td>
-                <td style="border:1px solid black">@kk.CaptainName</td>
-                <td style="border:1px solid black">@kk.WaiterName</td>
-                <td style="border:1px solid black">@kk.CustomerName</td>
-                <td style="border:1px solid black">@kk.OrderedTime.ToString("HH:mm tt")</td>
-            </tr>
+                    @foreach (var i in pp)
+                    {
+                        <tr>
+                            <td>@i.ItemName</td>
+                            <td style="text-align:center">@i.NoOfPendingItem</td>
+                            <td style="text-align:center">@i.NoOfReadyItem</td>
+                            <td style="text-align:center">@i.NoOfDeliveredItem</td>
+                            <td style="text-align:center">@i.NoOfDeliveredItem</td>
+                            <td style="text-align:center">Edit</td>
+                        </tr>
+                    }
 
-            <tr style="text-align:center; background-color:yellowgreen; border:1px solid blue;">
-                <td style="border:1px solid black">Item Name</td>
-                <td style="border:1px solid black">Pending</td>
-                <td style="border:1px solid black">Ready</td>
-                <td style="border:1px solid black">None</td>
-                <td style="border:1px solid black">Edit</td>
-            </tr>
+                </tbody>
 
-            <tbody>
-
-                @foreach (var i in tt)
-                {
-                    <tr>
-                        <td>@i.ItemName</td>
-                        <td>@i.PendingItemQty</td>
-                        <td>@i.Delivered</td>
-                        <td>none</td>
-                        <td>Edit</td>
-                    </tr>
-                }
-
-            </tbody>
-
-            <tr style="text-align:center">
-                <td colspan="5"><button class="btn btn-primary form-control" style="background-color:blueviolet; width:auto;">Update KOT</button></td>
-            </tr>           
-        </table>
-    </div>
+                <tr style="text-align:center">
+                    <td colspan="6"><button class="btn btn-primary form-control" style="background-color:blueviolet; width:auto;">Update KOT</button></td>
+                </tr>
+            </table>
+        </div>
+   }
 }
 
 
 
-
-
-
-
-
-<div class="col-3 p-1">
-    <table class="table table-bordered border-primary table-sm table-striped table-hover">
-        <thead style="background-color:blueviolet; color: white;">
-            <tr style="text-align:center">
-                <th colspan="2">
-                    Panner Tikka Masala
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Total Qty
-                </td>
-                <td>
-                    <input type="number" class="form-control" style="border:1px solid black; border-radius:5px; " />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Pending
-                </td>
-                <td>
-                    <input type="number" class="form-control" style="border:1px solid black; border-radius:5px;" />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Ready
-                </td>
-                <td>
-                    <input type="number" class="form-control" style="border:1px solid black; border-radius:5px; " />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Delivered
-                </td>
-                <td>
-                    <input type="number" class="form-control" style="border:1px solid black; border-radius:5px;" />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Cancel
-                </td>
-                <td>
-                    <input type="number" class="form-control" style="border:1px solid black; border-radius:5px;" />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Status
-                </td>
-                <td>
-                    <select class="form-select" style="border:1px solid black; border-radius:5px;">
-                        <option>Deliverd</option>
-                        <option>Pending</option>
-                        <option>Ready</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" style="text-align:center">
-                    <button class="btn btn-primary" style="background-color:blueviolet">Save</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-
-
-<div class="col-12">
-    <table class="table table-bordered border-primary table-sm table-striped table-hover">
-        <thead style="background-color:blueviolet; color: white;">
-            <tr style="text-align:center">
-                <th colspan="3">
-                    Table : 2  
-                </th>
-                <th colspan="3">
-                    KOT : 16
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr style="text-align:center; font-weight:bold; background-color:lightblue">
-                <td>Item Name</td>
-                <td>Pending</td>
-                <td>Cooking</td>
-                <td>Ready</td>
-                <td>Deliverd</td>
-                <td>Cancel</td>
-            </tr>
-            <tr style="align-content:center">
-                <td>Panner Tiikka Masala</td>
-                <td> <input type="number" class="form-control" style="border:1px solid black; border-radius:5px; " /></td>
-                <td>  <input type="number" class="form-control" style="border:1px solid black; border-radius:5px; " /></td>
-                <td>  <input type="number" class="form-control" style="border:1px solid black; border-radius:5px;" /></td>
-                <td>  <input type="number" class="form-control" style="border:1px solid black; border-radius:5px; " /></td>
-                <td>  <input type="number" class="form-control" style="border:1px solid black; border-radius:5px; " /></td>
-            </tr>
-            <tr>
-                <td>Panner Tiikka Masala</td>
-                <td>10</td>
-                <td>3</td>
-                <td>2</td>
-                <td>5</td>
-                <td>1</td>
-            </tr>
-            <tr>
-                <td>Panner Tiikka Masala</td>
-                <td>10</td>
-                <td>3</td>
-                <td>2</td>
-                <td>5</td>
-                <td>1</td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    Status
-                </td>
-                <td colspan="3">
-                    <select class="form-select" style="border:1px solid black">
-                        <option>Deliverd</option>
-                        <option>Pending</option>
-                        <option>Ready</option>
-                    </select>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="6" style="text-align:center">
-                    <button class="btn btn-primary" style="background-color:blueviolet">Save</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
 
 
 <div>
@@ -238,47 +101,112 @@
 
 
 
-
-
-
 @code {
-    string TitleName = "Supervisor Screen";
+    string TitleName = "KOT-Wise";
     string? Search;
+    List<int?> kotNoList = new List<int?>();
+
+      
 
 
-    List<SupervisorScreenModel> supervisorScreenModels = new List<SupervisorScreenModel>()
+    List<ItemwiseModel> ItemwiseTableModelList = new List<ItemwiseModel>(); 
+     List<ItemwiseModel> ItemwiseTableModelList1 = new List<ItemwiseModel>();
+
+    List<DailyTable_DTO> _dailyTableList = new List<DailyTable_DTO>();
+    List<DailyTableDetail_DTO> _dailyTableDetailList = new List<DailyTableDetail_DTO>();
+
+
+   
+
+    protected override async Task OnInitializedAsync()
     {
-        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka Panner Tikka Panner Tikka Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="1",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3},
-        new SupervisorScreenModel{TableName="2",CaptainName="Ramesh", WaiterName="Ganesh",CustomerName="Rawan",OrderedTime=DateTime.Now, ItemName="Panner Tikka",PendingItemQty=5,Delivered=3}
-    };
-
-    List<string>? TableName;
-    protected override void OnInitialized()
-    {
-
-        TableName = supervisorScreenModels.Select(temp => temp.TableName).Distinct().ToList()!;
+        await DailyTableService.GetAll();
+        await DailyTableDetailService.GetAll();
+        await EmployeeMasterService.GetAll();
+        await ItemwiseTableService.GetAll();
+        Load();       
     }
 
-    // private  modalRef;
-    // private Task ShowModal()
-    // {
-    //     return modalRef.Show();
-    // }
+    private void Load()
+    {
+        foreach (var item in DailyTableService.DailyTables)
+        {
+            DailyTable_DTO dailyTable_DTO = new DailyTable_DTO()
+                {
+                    TableName = item.TableId.ToString(),
+                    CaptainName =  EmployeeMasterService.Employees.Where(temp => temp.Empno == item.CaptainCode).Select(temp => temp.AliasName).FirstOrDefault(),
+                    WaiterName = EmployeeMasterService.Employees.Where(temp => temp.Empno == item.WetterCode).Select(temp => temp.AliasName).FirstOrDefault(),
+                    CustomerName = item.CustName,
+                    Time = Convert.ToDateTime(item.StartTime)
+                };
+            _dailyTableList.Add(dailyTable_DTO);
+        }
 
-    // private Task HideModal()
-    // {
-    //     return modalRef.Hide();
-    // }
+        foreach (var item in DailyTableDetailService.DailyTableDetails.Where(temp=>temp.Kotbot == "K"))
+        {
+            DailyTableDetail_DTO dailyTableDetail_DTO = new DailyTableDetail_DTO()
+                {
+                    TableName = item.TableNo.ToString(),
+                    ItemName = item.itemMaster?.ItemName,
+                    KOTMsg = item.Kotmsg,
+                    StartTime = Convert.ToDateTime(item.StartTime),
+                    Delivered = item.Delivered,
+                    Pending = item.Pending,
+                    Ready = item.Ready,
+                    Cooking = item.Cooking,
+                    Cancel = Convert.ToInt32(item.Cancel),
+                    KotNo = item.KotNo
+
+                };
+            _dailyTableDetailList.Add(dailyTableDetail_DTO);
+        }
+
+        foreach (var item in _dailyTableList)
+        {
+            foreach (var item1 in _dailyTableDetailList
+                .OrderBy(temp=>temp.ItemName)              
+                .Where(temp => temp.TableName == item.TableName).DistinctBy(temp=>new { temp.ItemName, temp.KOTMsg}).ToList())
+            {
+                ItemwiseModel ItemwiseTable = new ItemwiseModel()
+                    {
+                        TableName =item1.TableName,
+                        KotNo = item1.KotNo,
+                        CaptainName = item.CaptainName,
+                        WaiterName = item.WaiterName,
+                        CustomerName = item.CustomerName,
+                        StartTime = item1.StartTime,
+                        ItemName = item1.ItemName + ((item1.KOTMsg != "-") ? " [ " + item1.KOTMsg + " ] " : ""),
+                        KOTMessage = item1.KOTMsg,
+                        NoOfPendingItem = item1.Pending,
+                        NoOfCookingItem = item1.Cooking,
+                        NoOfCancelItem = item1.Cancel,
+                        NoOfDeliveredItem = item1.Delivered,
+                        NoOfReadyItem = item1.Ready
+                    };
+                ItemwiseTableModelList.Add(ItemwiseTable);
+            }
+        }
+
+
+
+
+
+
+
+
+        // var k = ItemwiseTableModelList.OrderBy(temp => temp.ItemName)
+        // .GroupBy(ItemwiseTableModelList => new { ItemwiseTableModelList.ItemName, ItemwiseTableModelList.KOTMessage })
+        // .Select(group => new
+        // {
+        //     TableName,
+         
+        //     ItemName = group.Key.ItemName + ((group.Key.KOTMessage == "-") ? "" : "         [ " + group.Key.KOTMessage + " ] "),
+                   
+        //     NoOfPendingItem = group.Sum(item => item.NoOfPendingItem),
+        //     NoOfCookingItem = group.Sum(item => item.NoOfCookingItem),
+        //     NoOfCancelItem = group.Sum(item => item.NoOfCancelItem)
+        // });
+      
+    }
+   
 }

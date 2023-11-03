@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PSS.Hotel.Shared.Models;
 
 public partial class DailyTableDetail
 {
+    //[Key]
+    //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    //public int? DailyTableDetailID { get; set; }
     public int? Srno { get; set; }
 
     public int? TableNo { get; set; }
-
-   
-
+  
     public int? Order { get; set; }
 
     public int? Unitcode { get; set; }
@@ -40,10 +42,7 @@ public partial class DailyTableDetail
     public int Cooking { get; set; }
 
     [ForeignKey("Itemcode")]
-    public ItemMaster? itemMaster { get; set; }
-    
+    public ItemMaster? itemMaster { get; set; }    
     public int? Itemcode { get; set; }
-
-   
 
 }

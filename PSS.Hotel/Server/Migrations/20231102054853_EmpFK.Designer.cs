@@ -3,6 +3,7 @@ using System;
 using EntityFrameworkCore.Jet.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSS.Hotel.Shared.Models;
 
@@ -11,9 +12,11 @@ using PSS.Hotel.Shared.Models;
 namespace PSS.Hotel.Server.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20231102054853_EmpFK")]
+    partial class EmpFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -978,7 +981,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "EmpCode" }, "EmpCode");
 
-                    b.ToTable("CaptainWiseCommissionBoundries", (string)null);
+                    b.ToTable("CaptainWiseCommissionBoundries");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.CaptainWiseSale", b =>
@@ -2153,7 +2156,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "Unitcode" }, "Unitcode");
 
-                    b.ToTable("CounCasess1Expenses", (string)null);
+                    b.ToTable("CounCasess1Expenses");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.CounCasess1ExpensesD", b =>
@@ -2476,7 +2479,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "Unitcode" }, "Unitcode");
 
-                    b.ToTable("CounCasess2Expenses", (string)null);
+                    b.ToTable("CounCasess2Expenses");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.CounCasessIiexpensesReport", b =>
@@ -3429,7 +3432,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "FineCharges" }, "NoOfDays");
 
-                    b.ToTable("CustomerFineCharges", (string)null);
+                    b.ToTable("CustomerFineCharges");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.CustomerInfo", b =>
@@ -4761,7 +4764,7 @@ namespace PSS.Hotel.Server.Migrations
                     b.HasIndex(new[] { "Empno" }, "Suppliercode")
                         .HasDatabaseName("Suppliercode1");
 
-                    b.ToTable("DepartmentWiseSales", (string)null);
+                    b.ToTable("DepartmentWiseSales");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.DepartmentWiseSalesDetail", b =>
@@ -8511,7 +8514,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "UserCode" }, "UserCode");
 
-                    b.ToTable("FunctionProspectus", (string)null);
+                    b.ToTable("FunctionProspectus");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.FunctionProspectusDetail", b =>
@@ -9406,7 +9409,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "UnitCode" }, "UnitCode");
 
-                    b.ToTable("ItemDapartmentwiseDailySales", (string)null);
+                    b.ToTable("ItemDapartmentwiseDailySales");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.ItemDetail", b =>
@@ -9541,7 +9544,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "UnitCode" }, "UnitCode");
 
-                    b.ToTable("ItemGroupWiseDailySales", (string)null);
+                    b.ToTable("ItemGroupWiseDailySales");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.ItemInfoReport", b =>
@@ -10933,7 +10936,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "Unitcode" }, "Unitcode");
 
-                    b.ToTable("LiquorGroupWiseSales", (string)null);
+                    b.ToTable("LiquorGroupWiseSales");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.LiquorType", b =>
@@ -15648,7 +15651,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "UnitCode" }, "UnitCode");
 
-                    b.ToTable("SectionWiseSales", (string)null);
+                    b.ToTable("SectionWiseSales");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.SectionWiseServiceCharge", b =>
@@ -17947,7 +17950,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "UnitCode" }, "UnitCode");
 
-                    b.ToTable("TempItemGroupWiseDailySales", (string)null);
+                    b.ToTable("TempItemGroupWiseDailySales");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.TempItemMaster", b =>
@@ -18405,7 +18408,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "Empno" }, "Usercode");
 
-                    b.ToTable("TempPresentyDownloadData", (string)null);
+                    b.ToTable("TempPresentyDownloadData");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.TempPurchaseRate", b =>
@@ -18843,7 +18846,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "Unitcode" }, "Unitcode");
 
-                    b.ToTable("TempSessionWiseTodaySales", (string)null);
+                    b.ToTable("TempSessionWiseTodaySales");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.TempStockConsumption", b =>
@@ -19792,7 +19795,7 @@ namespace PSS.Hotel.Server.Migrations
 
                     b.HasIndex(new[] { "Unitcode" }, "Unitcode");
 
-                    b.ToTable("TodaySales", (string)null);
+                    b.ToTable("TodaySales");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.TodaySalesItemWiseCaptain", b =>
@@ -20218,7 +20221,7 @@ namespace PSS.Hotel.Server.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("varchar(120)");
 
-                    b.ToTable("UnitWiseSales", (string)null);
+                    b.ToTable("UnitWiseSales");
                 });
 
             modelBuilder.Entity("PSS.Hotel.Shared.Models.UpdationFlag", b =>

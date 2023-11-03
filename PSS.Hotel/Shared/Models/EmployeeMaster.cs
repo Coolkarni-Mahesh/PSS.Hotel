@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PSS.Hotel.Shared.Models;
 
@@ -27,8 +28,6 @@ public partial class EmployeeMaster
 
     public DateTime? Dol { get; set; }
 
-    public int? Designationcode { get; set; }
-
     public int? Salary { get; set; }
 
     public int? GrossSalary { get; set; }
@@ -50,4 +49,9 @@ public partial class EmployeeMaster
     public string? TabDataAllow { get; set; }
 
     public int? CommissionBoundary { get; set; }
+
+
+    public int? Designationcode { get; set; }
+    [ForeignKey("Designationcode")]
+    public DesignationMaster? DesignationMaster { get; set; }
 }

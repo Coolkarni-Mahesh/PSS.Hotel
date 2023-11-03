@@ -39,7 +39,7 @@ public class EmployeeMasterService : IEmployeeMasterService
     {
         var response = new ServiceResponse<List<EmployeeMaster>>
         {
-            Data = await _context.EmployeeMasters.ToListAsync()
+            Data = await _context.EmployeeMasters.Include("DesignationMaster").AsNoTracking().ToListAsync()
         };
         return response;
     }

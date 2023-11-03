@@ -18,8 +18,16 @@ namespace PSS.Hotel.Server.Controllers
         [HttpGet("DailyTableDetail")]
         public async Task<ActionResult<ServiceResponse<List<DailyTableDetail>>>> GetAll()
         {
-           var result = await _dailyTableDetailService.GetAll();
-           return Ok(result);
+            try
+            {
+                var result = await _dailyTableDetailService.GetAll();
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

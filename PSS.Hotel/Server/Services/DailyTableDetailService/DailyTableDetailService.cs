@@ -12,10 +12,18 @@ public class DailyTableDetailService : IDailyTableDetailService
     }
     public async Task<ServiceResponse<List<DailyTableDetail>>> GetAll()
     {
-        var response = new ServiceResponse<List<DailyTableDetail>>()
+        try
         {
-            Data = await _context.DailyTableDetails.AsNoTracking().ToListAsync()
-        };
-       return response;
+            var response = new ServiceResponse<List<DailyTableDetail>>()
+            {
+                Data = await _context.DailyTableDetails.Include("itemMaster").AsNoTracking().ToListAsync()
+            };
+            return response;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 }

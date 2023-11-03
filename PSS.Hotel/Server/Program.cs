@@ -5,6 +5,9 @@ global using Microsoft.EntityFrameworkCore;
 global using PSS.Hotel.Server.Services.DailyTableDetailService;
 global using PSS.Hotel.Server.Services.EmployeeMasterService;
 global using PSS.Hotel.Server.Services.ItemwiseTableService;
+global using PSS.Hotel.Server.Services.SupervisorScreenService;
+global using PSS.Hotel.Server.Services.DailyTableService;
+
 using Microsoft.AspNetCore.ResponseCompression;
 using PSS.Hotel.Server.Hubs;
 
@@ -33,6 +36,9 @@ builder.Services.AddResponseCompression(option =>
 builder.Services.AddScoped<IEmployeeMasterService, EmployeeMasterService>();
 builder.Services.AddScoped<IDailyTableDetailService,DailyTableDetailService>();
 builder.Services.AddScoped<IItemwiseTableService, ItemwiseTableService>();
+builder.Services.AddScoped<ISupervisorScreenService, SupervisorScreenService>();
+builder.Services.AddScoped<IDailyTableService, DailyTableService>();
+
 
 var app = builder.Build();
 
