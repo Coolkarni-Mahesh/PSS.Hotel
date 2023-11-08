@@ -8,6 +8,7 @@ namespace PSS.Hotel.Shared;
 
 public class DailyTableDetail_DTO
 {
+    public int? DailyTableDetailID { get; set; }
     public string? TableName { get; set; }
     public int? KotNo { get; set; }
     public string? ItemName { get; set; }

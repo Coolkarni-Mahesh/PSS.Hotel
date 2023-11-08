@@ -29,5 +29,48 @@ namespace PSS.Hotel.Server.Controllers
                 throw;
             }
         }
+        [HttpGet("DailyTableDetail1")]
+        public async Task<ActionResult<DailyTableDetail>> GetByID(int ID)
+        {
+            try
+            {
+                var result = await _dailyTableDetailService.GetByID(ID);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet("DailyTableDetail2")]
+        public async Task<ActionResult<List<DailyTableDetail>>> GetByKotNo(int KotNo)
+        {
+            try
+            {
+                var result = await _dailyTableDetailService.GetByKotNo(KotNo);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPut]
+        public  async Task<ActionResult<ServiceResponse<DailyTableDetail>>> Update(DailyTableDetail dailyTableDetail)
+        {
+            try
+            {
+               var result =  await _dailyTableDetailService.Update(dailyTableDetail);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -48,4 +48,7 @@ public partial class ItemMaster
     public int? TssubGroupcode { get; set; }
 
     public string? ItemImagePath { get; set; }
+
+ //   public virtual ICollection<DailyTableDetail> DailyTableDetails { get; set; } = new List<DailyTableDetail>();
+
 }

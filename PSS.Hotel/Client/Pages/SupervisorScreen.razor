@@ -4,6 +4,7 @@
 @inject IDailyTableDetailService DailyTableDetailService
 @inject IEmployeeMasterService EmployeeMasterService
 @inject IItemwiseTableService ItemwiseTableService
+@inject NavigationManager NavigationManager
 
 <_Header Title=@TitleName></_Header>
 
@@ -77,23 +78,21 @@
                             <td style="text-align:center">@i.NoOfReadyItem</td>
                             <td style="text-align:center">@i.NoOfDeliveredItem</td>
                             <td style="text-align:center">@i.NoOfDeliveredItem</td>
-                            <td style="text-align:center">Edit</td>
+                            <td style="text-align:center">
+                                <button class="btn btn-primary" @onclick="(() => ShowItem(i.DailyTableDetailID))"><i class="oi oi-pencil"></i></button>
+                            </td>
                         </tr>
                     }
 
                 </tbody>
 
                 <tr style="text-align:center">
-                    <td colspan="6"><button class="btn btn-primary form-control" style="background-color:blueviolet; width:auto;">Update KOT</button></td>
+                    <td colspan="6"><button class="btn btn-primary form-control" style="background-color:blueviolet; width:auto;" @onclick="(()=>UpdateKOT(k))">Update KOT</button></td>
                 </tr>
             </table>
         </div>
    }
 }
-
-
-
-
 
 <div>
     <_Footer></_Footer>
@@ -106,17 +105,19 @@
     string? Search;
     List<int?> kotNoList = new List<int?>();
 
-      
+    int? KotBotNo;
+
+
 
 
     List<ItemwiseModel> ItemwiseTableModelList = new List<ItemwiseModel>(); 
-     List<ItemwiseModel> ItemwiseTableModelList1 = new List<ItemwiseModel>();
+    List<ItemwiseModel> ItemwiseTableModelList1 = new List<ItemwiseModel>();
 
     List<DailyTable_DTO> _dailyTableList = new List<DailyTable_DTO>();
     List<DailyTableDetail_DTO> _dailyTableDetailList = new List<DailyTableDetail_DTO>();
 
 
-   
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -155,7 +156,8 @@
                     Ready = item.Ready,
                     Cooking = item.Cooking,
                     Cancel = Convert.ToInt32(item.Cancel),
-                    KotNo = item.KotNo
+                    KotNo = item.KotNo,
+                    DailyTableDetailID = item.DailyTableDetailId
 
                 };
             _dailyTableDetailList.Add(dailyTableDetail_DTO);
@@ -181,7 +183,8 @@
                         NoOfCookingItem = item1.Cooking,
                         NoOfCancelItem = item1.Cancel,
                         NoOfDeliveredItem = item1.Delivered,
-                        NoOfReadyItem = item1.Ready
+                        NoOfReadyItem = item1.Ready,
+                        DailyTableDetailID = item1.DailyTableDetailID
                     };
                 ItemwiseTableModelList.Add(ItemwiseTable);
             }
@@ -199,14 +202,22 @@
         // .Select(group => new
         // {
         //     TableName,
-         
+
         //     ItemName = group.Key.ItemName + ((group.Key.KOTMessage == "-") ? "" : "         [ " + group.Key.KOTMessage + " ] "),
-                   
+
         //     NoOfPendingItem = group.Sum(item => item.NoOfPendingItem),
         //     NoOfCookingItem = group.Sum(item => item.NoOfCookingItem),
         //     NoOfCancelItem = group.Sum(item => item.NoOfCancelItem)
         // });
-      
+
     }
-   
+
+    void ShowItem(int? ID)
+    {
+        NavigationManager.NavigateTo($"Itemwise/{ID}");
+    }
+    void UpdateKOT(int? KotNo)
+    {
+        NavigationManager.NavigateTo($"KotUpdate/{KotNo}");
+    }
 }

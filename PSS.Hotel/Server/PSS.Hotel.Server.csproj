@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20231031140449_FKEmployee.cs" />
+    <Compile Remove="Migrations\20231031140449_FKEmployee.Designer.cs" />
     <Compile Remove="Migrations\20231103094738_PK_DailyTableDetail.cs" />
     <Compile Remove="Migrations\20231103094738_PK_DailyTableDetail.Designer.cs" />
   </ItemGroup>

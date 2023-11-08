@@ -2,6 +2,7 @@
 
 public class ItemwiseModel
 {
+    public int? DailyTableDetailID { get; set; }
     public string? TableName { get; set; }
     public int? KotNo { get; set; }
     public string? CaptainName { get; set; }

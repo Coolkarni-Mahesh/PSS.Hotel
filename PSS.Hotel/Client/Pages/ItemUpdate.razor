@@ -1,79 +1,109 @@
-﻿<h3>ItemUpdate</h3>
+﻿@layout EmptyLayout
+@page "/Itemwise/{ID:int}"
+@inject IDailyTableDetailService DailyTableDetailService
+@inject NavigationManager NavigationManager
 
-<div class="col-3 p-1">
-    <table class="table table-bordered border-primary table-sm table-striped table-hover">
-        <thead style="background-color:blueviolet; color: white;">
-            <tr style="text-align:center">
-                <th colspan="2">
-                    Panner Tikka Masala
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Total Qty
-                </td>
-                <td>
-                    <input type="number" class="form-control" style="border:1px solid black; border-radius:5px; " />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Pending
-                </td>
-                <td>
-                    <input type="number" class="form-control" style="border:1px solid black; border-radius:5px;" />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Ready
-                </td>
-                <td>
-                    <input type="number" class="form-control" style="border:1px solid black; border-radius:5px; " />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Delivered
-                </td>
-                <td>
-                    <input type="number" class="form-control" style="border:1px solid black; border-radius:5px;" />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Cancel
-                </td>
-                <td>
-                    <input type="number" class="form-control" style="border:1px solid black; border-radius:5px;" />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center; vertical-align:middle">
-                    Status
-                </td>
-                <td>
-                    <select class="form-select" style="border:1px solid black; border-radius:5px;">
-                        <option>Deliverd</option>
-                        <option>Pending</option>
-                        <option>Ready</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" style="text-align:center">
-                    <button class="btn btn-primary" style="background-color:blueviolet">Save</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<PageTitle>Update Item</PageTitle>
+<h3>Update Item</h3>
 
+
+
+<EditForm Model="DailyTableDetailService.SingleDailyTableDetail" OnSubmit="HandleSubmit">
+
+    <div class="col-3 p-1">
+        <table class="table table-bordered border-primary table-sm table-striped table-hover">
+            <thead style="background-color:blueviolet; color: white;">
+                <tr style="text-align:center">
+                    <th colspan="2">
+                        @DailyTableDetailService.SingleDailyTableDetail?.itemMaster?.ItemName
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:center; vertical-align:middle">
+                        Total Qty
+                    </td>
+                    <td>
+                        <input id="TotalQty" type="number"  @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Order class="form-control" style="border:1px solid black; border-radius:5px; " />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center; vertical-align:middle">
+                       Pending
+                    </td>
+                    <td>
+                        <input id="Pending" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Pending class="form-control" style="border:1px solid black; border-radius:5px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center; vertical-align:middle">
+                       Ready
+                    </td>
+                    <td>
+                        <input id="Ready" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Ready class="form-control" style="border:1px solid black; border-radius:5px; " />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center; vertical-align:middle">
+                        Delivered
+                    </td>
+                    <td>
+                        <input id="Delivered" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Delivered class="form-control" style="border:1px solid black; border-radius:5px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center; vertical-align:middle">
+                       Cancel
+                    </td>
+                    <td>
+                        <input id="Cancel" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Cancel class="form-control" style="border:1px solid black; border-radius:5px;" />
+                    </td>
+                </tr>
+                @*  <tr>
+                <td style="text-align:center; vertical-align:middle">
+                Status
+                </td>
+                <td>
+                <select class="form-select" style="border:1px solid black; border-radius:5px;">
+                <option>Deliverd</option>
+                <option>Pending</option>
+                <option>Ready</option>
+                </select>
+                </td>
+                </tr> *@
+                <tr>
+                    <td colspan="2" style="text-align:center">
+                        <button type="submit" class="btn btn-primary" style="background-color:blueviolet">Save</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</EditForm>
 
 
 
 @code {
 
+    [Parameter]
+    public int? ID { get; set; }
+    DailyTableDetail _dailyTableDetail = new DailyTableDetail();
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await DailyTableDetailService.GetByID(ID);
+
+    }
+    async Task HandleSubmit()
+    {
+
+        _dailyTableDetail = await DailyTableDetailService.Update(DailyTableDetailService.SingleDailyTableDetail);
+        NavigationManager.NavigateTo("SupervisorScreen");
+    }
+    // async Task HandleSubmit1()
+    // {
+    //     //  await DailyTableDetailService.Update(DailyTableDetailService.SingleDailyTableDetail,ID);
+    // }
 }

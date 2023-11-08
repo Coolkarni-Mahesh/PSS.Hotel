@@ -7,9 +7,9 @@ namespace PSS.Hotel.Shared.Models;
 
 public partial class DailyTableDetail
 {
-    //[Key]
-    //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    //public int? DailyTableDetailID { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int? DailyTableDetailId { get; set; }
     public int? Srno { get; set; }
 
     public int? TableNo { get; set; }

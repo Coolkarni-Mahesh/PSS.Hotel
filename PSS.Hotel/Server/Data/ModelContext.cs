@@ -2559,16 +2559,22 @@ public partial class ModelContext : DbContext
 
         modelBuilder.Entity<DailyTableDetail>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("DailyTableDetail");
+
+            entity.HasKey(e => e.DailyTableDetailId).HasName("PrimaryKey");
+
+            entity.ToTable("DailyTableDetail");
 
             entity.HasIndex(e => e.Itemcode, "Itemcode");
 
             entity.HasIndex(e => e.Unitcode, "Unitcode");
 
+            entity.Property(e => e.DailyTableDetailId)
+                .HasColumnType("counter")
+                .HasColumnName("DailyTableDetailID");
             entity.Property(e => e.ActualRate).HasDefaultValueSql("0");
             entity.Property(e => e.Cancel).HasDefaultValueSql("0");
+            entity.Property(e => e.Cooking).HasDefaultValueSql("0");
+            entity.Property(e => e.Delivered).HasDefaultValueSql("0");
             entity.Property(e => e.Itemcode).HasDefaultValueSql("0");
             entity.Property(e => e.KotNo).HasDefaultValueSql("0");
             entity.Property(e => e.Kotbot)
@@ -2578,9 +2584,11 @@ public partial class ModelContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("KOTMsg");
             entity.Property(e => e.Order).HasDefaultValueSql("0");
+            entity.Property(e => e.Pending).HasDefaultValueSql("0");
             entity.Property(e => e.Rate)
                 .HasDefaultValueSql("0")
                 .HasColumnName("rate");
+            entity.Property(e => e.Ready).HasDefaultValueSql("0");
             entity.Property(e => e.SnacksRate).HasDefaultValueSql("0");
             entity.Property(e => e.Srno)
                 .HasDefaultValueSql("0")
@@ -2589,6 +2597,59 @@ public partial class ModelContext : DbContext
             entity.Property(e => e.Stockded).HasMaxLength(1);
             entity.Property(e => e.TableNo).HasDefaultValueSql("0");
             entity.Property(e => e.Unitcode).HasDefaultValueSql("0");
+
+         //   entity.HasOne(d => d.itemMaster).WithMany(p => p.DailyTableDetails).HasForeignKey(d => d.Itemcode);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //entity
+            //    .HasNoKey()
+            //    .ToTable("DailyTableDetail");
+
+            //entity.HasIndex(e => e.Itemcode, "Itemcode");
+
+            //entity.HasIndex(e => e.Unitcode, "Unitcode");
+
+            //entity.Property(e => e.ActualRate).HasDefaultValueSql("0");
+            //entity.Property(e => e.Cancel).HasDefaultValueSql("0");
+            //entity.Property(e => e.Itemcode).HasDefaultValueSql("0");
+            //entity.Property(e => e.KotNo).HasDefaultValueSql("0");
+            //entity.Property(e => e.Kotbot)
+            //    .HasMaxLength(120)
+            //    .HasColumnName("kotbot");
+            //entity.Property(e => e.Kotmsg)
+            //    .HasMaxLength(255)
+            //    .HasColumnName("KOTMsg");
+            //entity.Property(e => e.Order).HasDefaultValueSql("0");
+            //entity.Property(e => e.Rate)
+            //    .HasDefaultValueSql("0")
+            //    .HasColumnName("rate");
+            //entity.Property(e => e.SnacksRate).HasDefaultValueSql("0");
+            //entity.Property(e => e.Srno)
+            //    .HasDefaultValueSql("0")
+            //    .HasColumnName("srno");
+            //entity.Property(e => e.StartTime).HasMaxLength(120);
+            //entity.Property(e => e.Stockded).HasMaxLength(1);
+            //entity.Property(e => e.TableNo).HasDefaultValueSql("0");
+            //entity.Property(e => e.Unitcode).HasDefaultValueSql("0");
         });
 
         modelBuilder.Entity<DailyTableDetailCd>(entity =>
