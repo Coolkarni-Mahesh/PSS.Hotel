@@ -1,5 +1,6 @@
 ﻿@layout EmptyLayout
 @page "/Itemwise/{ID:int}"
+@using Microsoft.AspNetCore.SignalR.Client
 @inject IDailyTableDetailService DailyTableDetailService
 @inject NavigationManager NavigationManager
 
@@ -90,6 +91,18 @@
     public int? ID { get; set; }
     DailyTableDetail _dailyTableDetail = new DailyTableDetail();
 
+    private HubConnection hubConnection;
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/DailyTabledetailHub")).Build();
+        await hubConnection.StartAsync();
+    }
+
+    public bool IsConnected => hubConnection.State == HubConnectionState.Connected;
+
+
+
+
 
     protected override async Task OnParametersSetAsync()
     {
@@ -100,10 +113,23 @@
     {
 
         _dailyTableDetail = await DailyTableDetailService.Update(DailyTableDetailService.SingleDailyTableDetail);
+        if (IsConnected) await SendMessage();
         NavigationManager.NavigateTo("SupervisorScreen");
     }
+
+    Task SendMessage() => hubConnection.SendAsync("SendMessage");
+
     // async Task HandleSubmit1()
     // {
     //     //  await DailyTableDetailService.Update(DailyTableDetailService.SingleDailyTableDetail,ID);
     // }
+
+    public void Dispose()
+    {
+        _ = hubConnection.DisposeAsync();
+    }
+
+
+
+
 }

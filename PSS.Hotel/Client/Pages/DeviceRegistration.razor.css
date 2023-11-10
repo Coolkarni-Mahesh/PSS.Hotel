@@ -5,3 +5,24 @@
     justify-content: center;
     width: 80%;
 }
+.set-Font {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder
+}
+.bg {
+    background: url('images/bg3.jpg') 50% 0 no-repeat fixed;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 40px;
+    border: 1px solid#2b3990;
+}
+.TextBoxBorder {
+    border-radius: 20px;
+    border: 1px solid;
+    border-color:#2b3990
+}
+.btnBorder {
+    border-radius: 20px;
+    width: auto
+}

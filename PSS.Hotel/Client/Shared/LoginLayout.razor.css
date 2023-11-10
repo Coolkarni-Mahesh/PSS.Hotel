@@ -1,6 +1,7 @@
 ﻿
 body {
-    background: url('images/bg11.jpg') 50% 0 fixed;
+   /* background: url('images/bg11.jpg') 50% 0 fixed;*/
+   background-color:whitesmoke;
     background-repeat: no-repeat;
     background-size: cover;
 }

@@ -3,9 +3,9 @@
         <h5>@Title</h5>
     </div>
 
-    <div class="Header-Elements">
+   @*  <div class="Header-Elements">
         <h6>Cancel KOT</h6>
-    </div>
+    </div> *@
 
     <div class="Header-Elements m-1">
         <select class="form-select">
@@ -16,8 +16,10 @@
 
     <div class="Header-Elements m-1">
         <select class="form-select">
-            <option>Item-wise</option>
-            <option>KOT-wise</option>
+            <option>Table Status</option>
+            <option>Item-Wise Status</option>
+            <option>KOT-Wise Status</option>
+            <option>Section-Wise Status</option>
         </select>
     </div>
 </div>
@@ -32,9 +34,9 @@
 
     string? value;
 
-    List<LovOrderType> orderType = new List<LovOrderType>()
-    {
-        new LovOrderType{Id = 1, Key="Itemwise", Value="Itemwise"},
-        new LovOrderType{Id = 2, Key="KOTwise", Value="KOTwise"}
-     };
+    // List<LovOrderType> orderType = new List<LovOrderType>()
+    // {
+    //     new LovOrderType{Id = 1, Key="Itemwise", Value="Itemwise"},
+    //     new LovOrderType{Id = 2, Key="KOTwise", Value="KOTwise"}
+    //  };
 }

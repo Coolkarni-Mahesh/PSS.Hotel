@@ -1,77 +1,44 @@
 ﻿@layout LoginLayOut
 @page "/"
 @inject NavigationManager NavigationManager
-
-
 <div class="flex-container">
-
     <div class="col-sm-5 col-12 mx-auto position-static">
-        <div class="p-5 bg-white shadow-lg" style="background:url('images/bg3.jpg') 50% 0 no-repeat fixed; background-size:cover; height:100%; width:100%; border-radius:40px;border: 1px solid#2b3990;">
-
+        <div class="p-5 bg-white shadow-lg bg">
             <EditForm Model="deviceRegistration" OnValidSubmit="HandleSubmit">
-                <h5 class="text-center">Server Registration</h5>
-
-                <label class="font-500">User Name</label>
-                <InputText id="txtUserName" tabindex="1" @bind-Value="deviceRegistration.Username" class="form-control mb-2" placeholder="Enter User Name" @onkeypress="@keydown" style="border-radius:20px; border: 1px solid#2b3990;"></InputText>
-
-                <label class="font-500">Server IP Address</label>
-                <InputText id="txtServerIPAddress" tabindex="2" @bind-Value="deviceRegistration.ServerIPAddress" class="form-control mb-2" placeholder="Enter Server IP Address" @onkeypress="@keydown" style="border-radius:20px; border: 1px solid#2b3990;"></InputText>
-
-                <label class="font-500">Registration Date</label>
-                <input name="" class="form-control mb-3" readonly type="text" value="@DateTime.Now.ToString("dd/MM/yyyy")" style= "border-radius:20px; border: 1px solid#2b3990;">
-
-                <button tabindex="3" type="button" class="btn btn-primary w-100 shadow-lg mt-2" @onclick="JumpToLoginPage" style="border-radius:20px; width:auto">Register</button>
-
-                <div class="text-center pt-4" style="font-family:'Times New Roman', Times, serif; font-weight:100">Copyright : Perfect Software Solution Pvt. Ltd.</div>
+                <h5 class="text-center set-Font">Server Registration</h5>
+                <label id="lblUserName" for="txtUserName" class="font-500 set-Font">User Name</label>
+                <InputText id="txtUserName"
+                           tabindex="1"
+                           class="form-control mb-2 TextBoxBorder"
+                           placeholder="Enter User Name"
+                           style="border-radius:20px; border: 1px solid#2b3990;"
+                @bind-Value="deviceRegistration.Username"
+                @onkeypress="@keydown">
+                </InputText>
+                <label id="lblServerIpAddress" for="txtServerIPAddress" class="font-500 set-Font">Server IP Address</label>
+                <InputText id="txtServerIPAddress"
+                           tabindex="2"
+                           class="form-control mb-2"
+                           placeholder="Enter Server IP Address"
+                           style="border-radius:20px; border: 1px solid#2b3990;"
+                @bind-Value="deviceRegistration.ServerIPAddress"
+                @onkeypress="@keydown">
+                </InputText>
+                <label id="lblRegistrationDate" for="txtRegistrationDate" class="font-500 set-Font">Registration Date</label>
+                <input id="txtRegistrationDate"
+                       class="form-control mb-3 TextBoxBorder"
+                       readonly
+                       type="text"
+                       value="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                <button name="btnSubmit"
+                        tabindex="3"
+                        type="submit"
+                        class="btn btn-primary w-100 shadow-lg mt-2 btnBorder"
+                @onclick="JumpToLoginPage">
+                    Register
+                </button>
+                <div class="text-center pt-4 set-Font">Copyright : Perfect Software Solution Pvt. Ltd.</div>
             </EditForm>
         </div>
     </div>
 </div>
-
-
-@code
-{
-    string KeyPressed = "";
-    [Inject]
-    protected IJSRuntime JsRuntime { get; set; }
-    
-    PSS.Hotel.Shared.Models.DeviceRegistration deviceRegistration = new PSS.Hotel.Shared.Models.DeviceRegistration();
-
-    void JumpToLoginPage()
-    {
-        NavigationManager.NavigateTo("/Login");
-    }
-
-    protected override void OnInitialized()
-    {
-
-    }
-
-    void HandleSubmit()
-    {
-
-    }
-
-    void Tab(KeyboardEventArgs e)
-    {
-        if (e.Key == "Enter")
-        {
-            
-            e.Key = "Tab";
-        }
-    }
-
-    public void keydown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs args)
-    {
-        KeyPressed = "Key Pressed is " + args.Key;
-        if (args.Key == "Enter")
-        {
-            JsRuntime.InvokeVoidAsync("onFocus", "txtUserName");
-        }
-    }
-}
-
-
-
-
-

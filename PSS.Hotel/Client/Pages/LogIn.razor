@@ -8,15 +8,20 @@
 <div class="container">
     <div class="col-lg-5 mx-auto my-auto">
         <div class="text-center image-size-small position-relative">
-            <img src="/images/MK.jpg" class="rounded-circle p-4">           
+            <img src="/images/MK.jpg" class="rounded-circle p-4">
         </div>
-        <div class="p-4" style=" background:url('images/bg3.jpg') 50% 0 no-repeat fixed; background-size:cover; height:100%; width:100%; border-radius:40px; border: 1px solid#2b3990;">
-            <h4 class="mb-2 text-center pt-5">Bagga International</h4>
+        <div class="p-4 bg">
+            <div> <h4 class="text-center pt-4 set-Font">Ambar</h4> </div>
+            <div> <h5 class="text-center pt-1 set-Font">User Login</h5> </div>
 
             <EditForm Model="employeeMaster" OnValidSubmit="HandleSubmit">
 
-                <label class="font-500">User</label>
-                <InputSelect id="txtempUsername" @bind-Value="employeeMaster.AliasName" class="form-select mb-2" Placeholder="Select Employee Name" style="border-radius:20px; border: 1px solid#2b3990;" >
+                <label id="lblUser" for="txtempUsername" class="font-500 set-Font">User</label>
+                <InputSelect id="txtempUsername"
+                             class="form-select mb-2"
+                             Placeholder="Select Employee Name"
+                             style="border-radius:20px; border: 1px solid#2b3990;"
+                @bind-Value="employeeMaster.AliasName">
 
                     @foreach (var emp in EmployeeMasterService.Employees)
                     {
@@ -24,60 +29,33 @@
                     }
                 </InputSelect>
 
+                <label id="lblPassword" for="txtpassword" class="font-500 set-Font">Password</label>
+                <InputText id="txtpassword"
+                           type="password"
+                           class="form-control mb-2"
+                           placeholder="Password"
+                           style="border-radius:20px; border: 1px solid#2b3990;"
+                @bind-Value="employeeMaster.Password">
+                </InputText>
 
-
-                <label for="Password">Password</label>
-                <InputText id="txtpassword" @bind-Value="employeeMaster.Password" type="password" class="form-control mb-2" placeholder="Password" style="border-radius:20px; border: 1px solid#2b3990; "></InputText>
-
-                <label for="Sections">Section</label>
-                <select class="form-select mb-4" style="border-radius:20px; border: 1px solid#2b3990;">
-                    <option>Kitchen</option>
-                    <option>Waiter</option>
+                <label id="lblSection" for="dpSection" class="font-500 set-Font">Section</label>
+                <select id="dpSection"
+                        class="form-select mb-4 set-Font"
+                        style="border-radius:20px; border: 1px solid#2b3990;">
+                    <option value="Kitchen">Kitchen</option>
+                    <option value="Waiter">Waiter</option>
                 </select>
 
                 <RadzenStack AlignItems="AlignItems.Center">
-                    <p class="align-self-center py-0 AlignItem">Transaction Date : @DateTime.Now.ToString("dd/MM/yyyy") </p>
+                    <p class="align-self-center py-0 AlignItem set-Font">Transaction Date : @DateTime.Now.ToString("dd/MM/yyyy") </p>
                 </RadzenStack>
-                <button class="btn btn-primary btn-lg w-100 shadow-lg" style="border-radius:20px;">SIGN IN</button>
 
-                <p class="mb-0 text-center pt-2" style="font-family:'Times New Roman', Times, serif; font-weight:bolder">Copyright : Perfect Software Solution Pvt. Ltd.</p>
-            </EditForm>        
+                <button id="btnSignIn" class="btn btn-primary btn-lg w-100 shadow-lg" style="border-radius:20px;">SIGN IN</button>
+
+                <p class="mb-0 text-center pt-2 set-Font">Copyright : Perfect Software Solution Pvt. Ltd.</p>
+
+            </EditForm>
         </div>
     </div>
-    <span style="justify-items:center; color:red">@Message</span>
+    <span class="align-content-xxl-center" style="color:red">@Message</span>
 </div>
-
-@code {
-    string Message = string.Empty;
-
-    EmployeeMaster employeeMaster = new EmployeeMaster();
-
-    protected override async Task OnInitializedAsync()
-    {
-        await EmployeeMasterService.GetAll();
-    }
-
-    async Task HandleSubmit()
-    {
-
-        if (!string.IsNullOrWhiteSpace(employeeMaster.AliasName) && !string.IsNullOrWhiteSpace(employeeMaster.Password))
-        {
-            var result = await EmployeeMasterService.IsAuthoriezed(employeeMaster.AliasName!, employeeMaster.Password!);
-            if (result)
-            {
-                NavigationManager.NavigateTo("/Index");
-            }
-            else
-            {
-                Message = "Wrong Username and Password ";
-                NavigationManager.NavigateTo("/Login");
-               
-            }
-        }
-        else
-        {
-            Message = "Username and Password does not match";
-        }
-    }
-    
-}                      

@@ -60,3 +60,15 @@ body {
     align-items: center;
     justify-content: center;
 }
+.set-Font {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder
+}
+.bg {
+    background: url('images/bg3.jpg') 50% 0 no-repeat fixed;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 40px;
+    border: 1px solid#2b3990;
+}
