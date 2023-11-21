@@ -19,4 +19,5 @@ public class DailyTableDetail_DTO
     public int Ready { get; set; }
     public int Cooking { get; set; }
     public int Cancel { get; set; }
+    public int? Qty { get; set; }
 }

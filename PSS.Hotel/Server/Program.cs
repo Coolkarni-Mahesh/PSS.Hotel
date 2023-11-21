@@ -10,7 +10,7 @@ global using PSS.Hotel.Server.Services.DailyTableService;
 
 using Microsoft.AspNetCore.ResponseCompression;
 using PSS.Hotel.Server.Hubs;
-
+using PSS.Hotel.Server.Services.TableNameService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +38,8 @@ builder.Services.AddScoped<IDailyTableDetailService,DailyTableDetailService>();
 builder.Services.AddScoped<IItemwiseTableService, ItemwiseTableService>();
 builder.Services.AddScoped<ISupervisorScreenService, SupervisorScreenService>();
 builder.Services.AddScoped<IDailyTableService, DailyTableService>();
+builder.Services.AddScoped<ITableNameService, TableNameService> ();
+
 
 
 var app = builder.Build();

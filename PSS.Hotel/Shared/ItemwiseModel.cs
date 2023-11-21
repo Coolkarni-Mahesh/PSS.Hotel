@@ -15,5 +15,6 @@ public class ItemwiseModel
     public int NoOfCookingItem { get; set; }
     public int NoOfCancelItem { get; set; }
     public int NoOfDeliveredItem { get; set; }   
-    public int NoOfReadyItem { get; set; }   
+    public int NoOfReadyItem { get; set; }
+    public int? NoOfQuantity { get; set; }
 }

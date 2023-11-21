@@ -1,25 +1,24 @@
-﻿<div class="Header-Background">
+﻿
+<div class="Header-Background">
     <div class="Header-Title">
         <h5>@Title</h5>
     </div>
-
-   @*  <div class="Header-Elements">
-        <h6>Cancel KOT</h6>
-    </div> *@
-
+@* 
     <div class="Header-Elements m-1">
         <select class="form-select">
             <option>Small</option>
             <option>Large</option>
         </select>
-    </div>
+    </div> *@
 
     <div class="Header-Elements m-1">
-        <select class="form-select">
-            <option>Table Status</option>
-            <option>Item-Wise Status</option>
-            <option>KOT-Wise Status</option>
-            <option>Section-Wise Status</option>
+        <select class="form-select" @onchange="NavigateToPage">
+            <option>Select Status</option>
+            <option value="/Index">Home</option>
+            <option value="/KOTPendingTables">Table Status</option>
+            <option value="/ItemwiseTables">Item-Wise Status</option>
+            <option value="/SupervisorScreen">KOT-Wise Status</option>
+            <option value="">Section-Wise Status</option>
         </select>
     </div>
 </div>
@@ -30,13 +29,19 @@
     [Parameter]
     public string? Title { get; set; }
 
+    [Inject]
+    private NavigationManager? NavigationManager { get; set; }
 
 
-    string? value;
 
-    // List<LovOrderType> orderType = new List<LovOrderType>()
-    // {
-    //     new LovOrderType{Id = 1, Key="Itemwise", Value="Itemwise"},
-    //     new LovOrderType{Id = 2, Key="KOTwise", Value="KOTwise"}
-    //  };
+
+    private void NavigateToPage(ChangeEventArgs e)
+    {
+        string? selectedValue = e.Value?.ToString();
+        if (!string.IsNullOrEmpty(selectedValue))
+        {
+            string url = selectedValue;
+            NavigationManager?.NavigateTo(url);
+        }
+    }
 }

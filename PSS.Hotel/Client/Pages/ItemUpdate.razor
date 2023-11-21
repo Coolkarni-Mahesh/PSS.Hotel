@@ -21,30 +21,26 @@
                 </tr>
             </thead>
             <tbody>
+
                 <tr>
                     <td style="text-align:center; vertical-align:middle">
                         Total Qty
                     </td>
                     <td>
-                        <input id="TotalQty" type="number"  @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Order class="form-control" style="border:1px solid black; border-radius:5px; " />
+                        <input id="TotalQty" readonly type="number"  @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Order class="form-control" style="border:1px solid black; border-radius:5px; " />
                     </td>
                 </tr>
+
+
                 <tr>
                     <td style="text-align:center; vertical-align:middle">
                        Pending
                     </td>
                     <td>
-                        <input id="Pending" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Pending class="form-control" style="border:1px solid black; border-radius:5px;" />
+                        <input id="Pending" readonly type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Pending class="form-control" style="border:1px solid black; border-radius:5px;" />
                     </td>
                 </tr>
-                <tr>
-                    <td style="text-align:center; vertical-align:middle">
-                       Ready
-                    </td>
-                    <td>
-                        <input id="Ready" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Ready class="form-control" style="border:1px solid black; border-radius:5px; " />
-                    </td>
-                </tr>
+
                 <tr>
                     <td style="text-align:center; vertical-align:middle">
                         Delivered
@@ -53,6 +49,25 @@
                         <input id="Delivered" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Delivered class="form-control" style="border:1px solid black; border-radius:5px;" />
                     </td>
                 </tr>
+
+                <tr>
+                    <td style="text-align:center; vertical-align:middle">
+                        Cooking
+                    </td>
+                    <td>
+                        <input id="Delivered" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Cooking class="form-control" style="border:1px solid black; border-radius:5px;" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center; vertical-align:middle">
+                       Ready
+                    </td>
+                    <td>
+                        <input id="Ready" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Ready class="form-control" style="border:1px solid black; border-radius:5px; " />
+                    </td>
+                </tr>
+              
                 <tr>
                     <td style="text-align:center; vertical-align:middle">
                        Cancel
@@ -91,14 +106,14 @@
     public int? ID { get; set; }
     DailyTableDetail _dailyTableDetail = new DailyTableDetail();
 
-    private HubConnection hubConnection;
+    private HubConnection? hubConnection;
     protected override async Task OnInitializedAsync()
     {
         hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/DailyTabledetailHub")).Build();
         await hubConnection.StartAsync();
     }
 
-    public bool IsConnected => hubConnection.State == HubConnectionState.Connected;
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
 
 
 
@@ -117,7 +132,7 @@
         NavigationManager.NavigateTo("SupervisorScreen");
     }
 
-    Task SendMessage() => hubConnection.SendAsync("SendMessage");
+    Task SendMessage() => hubConnection!.SendAsync("SendMessage");
 
     // async Task HandleSubmit1()
     // {
@@ -126,7 +141,7 @@
 
     public void Dispose()
     {
-        _ = hubConnection.DisposeAsync();
+        _ = hubConnection!.DisposeAsync();
     }
 
 

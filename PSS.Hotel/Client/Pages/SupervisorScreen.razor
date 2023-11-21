@@ -4,6 +4,7 @@
 @inject IDailyTableDetailService DailyTableDetailService
 @inject IEmployeeMasterService EmployeeMasterService
 @inject IItemwiseTableService ItemwiseTableService
+@inject ITableNameService TableNameService
 @inject NavigationManager NavigationManager
 
 <_Header Title=@TitleName></_Header>
@@ -15,14 +16,14 @@
         <input class="form-control" style="display:inline-block; margin-left:5px; width:auto; border:1px solid black" type="text" @bind-value="@Search" placeholder="Enter Table Name" />
     </div>
 
-    <div class="Header-Elements" style="float:right">
+   @*  <div class="Header-Elements" style="float:right">
         <label class="form-label" style="display:inline-block;color:black">search by Status :</label>
         <select class="form-select" style="display:inline-block;border:1px solid black">
             <option>All</option>
             <option>Pending</option>
             <option>Delivered</option>
         </select>
-    </div>
+    </div> *@
 
 </div>
 
@@ -47,37 +48,41 @@
                     <td>Captain</td>
                     <td>Waiter</td>
                     <td>Customer</td>
-                    <td>Time</td>
+                    <td colspan="3">Time</td>
                 </tr>
 
                 <tr style="text-align:center; border:1px solid black; border-top-color:black">
-                    <td style="font-size:x-large">@pp[0].TableName</td>
+                    <td style="font-size:x-large">@TableNameService.TableNames.FirstOrDefault(temp=>temp.TableId == Convert.ToInt32(pp[0].TableName))?.TableName1</td>
                     <td style="border:1px solid black">@k</td>
                     <td style="border:1px solid black">@pp[0].CaptainName</td>
                     <td style="border:1px solid black">@pp[0].WaiterName</td>
                     <td style="border:1px solid black">@pp[0].CustomerName</td>
-                    <td style="border:1px solid black">@pp[0].StartTime.ToString("HH:mm tt")</td>
+                    <td colspan="3" style="border:1px solid black">@pp[0].StartTime.ToString("hh:mm tt")</td>
                 </tr>
 
                 <tr style="text-align:center; background-color:yellowgreen; border:1px solid blue;">
-                    <td style="border:1px solid black;min-width:180px">Item Name</td>
-                    <td style="border:1px solid black;min-width:50px">Pending</td>
-                    <td style="border:1px solid black;min-width:80px">Ready</td>
-                    <td style="border:1px solid black;min-width:80px">Delivered</td>
-                    <td style="border:1px solid black;min-width:80px">Cooking</td>
-                    <td style="border:1px solid black;min-width:80px">Edit</td>
+                    <td style="border:1px solid black;">Item Name</td>
+                    <td style="border:1px solid black;">Qty</td>
+                    <td style="border:1px solid black;">Pending</td>
+                    <td style="border:1px solid black;">Delivered</td>
+                    <td style="border:1px solid black;">Cooking</td>
+                    <td style="border:1px solid black;">Ready</td>
+                    <td style="border:1px solid black;">Cancel</td>                   
+                    <td style="border:1px solid black;">Edit</td>                  
                 </tr>
 
                 <tbody>
 
                     @foreach (var i in pp)
                     {
-                        <tr>
+                        <tr>                          
                             <td>@i.ItemName</td>
+                            <td style="text-align:center">@i.NoOfQuantity</td>
                             <td style="text-align:center">@i.NoOfPendingItem</td>
-                            <td style="text-align:center">@i.NoOfReadyItem</td>
                             <td style="text-align:center">@i.NoOfDeliveredItem</td>
-                            <td style="text-align:center">@i.NoOfDeliveredItem</td>
+                            <td style="text-align:center">@i.NoOfCancelItem</td>
+                            <td style="text-align:center">@i.NoOfReadyItem</td>                         
+                            <td style="text-align:center">@i.NoOfCancelItem</td>
                             <td style="text-align:center">
                                 <button class="btn btn-primary" @onclick="(() => ShowItem(i.DailyTableDetailID))"><i class="oi oi-pencil"></i></button>
                             </td>
@@ -87,7 +92,7 @@
                 </tbody>
 
                 <tr style="text-align:center">
-                    <td colspan="6"><button class="btn btn-primary form-control" style="background-color:blueviolet; width:auto;" @onclick="(()=>UpdateKOT(k))">Update KOT</button></td>
+                    <td colspan="8"><button class="btn btn-primary form-control" style="background-color:blueviolet; width:auto;" @onclick="(()=>UpdateKOT(k))">Update KOT</button></td>
                 </tr>
             </table>
         </div>
@@ -125,6 +130,7 @@
         await DailyTableDetailService.GetAll();
         await EmployeeMasterService.GetAll();
         await ItemwiseTableService.GetAll();
+        await TableNameService.GetAll();
         Load();       
     }
 
@@ -157,7 +163,8 @@
                     Cooking = item.Cooking,
                     Cancel = Convert.ToInt32(item.Cancel),
                     KotNo = item.KotNo,
-                    DailyTableDetailID = item.DailyTableDetailId
+                    DailyTableDetailID = item.DailyTableDetailId,
+                    Qty = item.Order
 
                 };
             _dailyTableDetailList.Add(dailyTableDetail_DTO);
@@ -184,7 +191,8 @@
                         NoOfCancelItem = item1.Cancel,
                         NoOfDeliveredItem = item1.Delivered,
                         NoOfReadyItem = item1.Ready,
-                        DailyTableDetailID = item1.DailyTableDetailID
+                        DailyTableDetailID = item1.DailyTableDetailID,
+                        NoOfQuantity = item1.Qty
                     };
                 ItemwiseTableModelList.Add(ItemwiseTable);
             }

@@ -1,6 +1,7 @@
 ﻿@layout EmptyLayout
 @page "/KotUpdate/{KotNo:int}"
 @inject IDailyTableDetailService DailyTableDetailService
+@inject ITableNameService TableNameService
 @inject NavigationManager NavigationManager
 
 <PageTitle>KOT-Wise Update</PageTitle>
@@ -12,7 +13,7 @@
             <thead style="background-color:blueviolet; color: white;">
                 <tr style="text-align:center">
                     <th colspan="3">
-                        Table : @DailyTableDetailService.DailyTableDetails.Select(temp=>temp.TableNo).FirstOrDefault()
+                        Table :@TableNameService.TableNames.FirstOrDefault(temp=>temp.TableId == DailyTableDetailService.DailyTableDetails.Select(temp=>temp.TableNo).FirstOrDefault())?.TableName1
                     </th>
                     <th colspan="4">
                         KOT :  @DailyTableDetailService.DailyTableDetails.Select(temp=>temp.KotNo).FirstOrDefault()
@@ -21,26 +22,26 @@
             </thead>
             <tbody>
                 <tr style="text-align:center; font-weight:bold; background-color:lightblue">
-                    <td style="visibility:hidden; width:0px">Row ID</td>
+                    <td style="display:none">Row ID</td>
                     <td>Item Name</td>
+                    <td>Qty</td>
                     <td>Pending</td>
-                    <td>Cooking</td>
-                    <td>Ready</td>
                     <td>Delivered</td>
+                    <td>Cooking</td>
+                    <td>Ready</td>                  
                     <td>Cancel</td>
                 </tr>
 
-                @foreach (var item in DailyTableDetailService.DailyTableDetails)
+                @foreach (var item in DailyTableDetailService.DailyTableDetails.Where(temp=>temp.Kotbot=="K"))
                 {
-
-
                     <tr style="align-content:center">
-                        <td style="visibility:hidden">@item.DailyTableDetailId</td>
+                        <td style="display:none">@item.DailyTableDetailId</td>
                         <td>@item.itemMaster?.ItemName</td>
-                        <td> <input type="number" @bind-value=item.Pending class="form-control" style="border:1px solid black; border-radius:5px; " /></td>
+                        <td> <input  readonly @bind-value=item.Order class="form-control" style="border:1px solid black; border-radius:5px; padding-left:0px; padding-right:0px" /></td>
+                        <td> <input  readonly @bind-value=item.Pending class="form-control" style="border:1px solid black; border-radius:5px; " /></td>
+                        <td> <input type="number" @bind-value=item.Delivered class="form-control" style="border:1px solid black; border-radius:5px; " /></td>
                         <td> <input type="number" @bind-value=item.Cooking class="form-control" style="border:1px solid black; border-radius:5px; " /></td>
                         <td> <input type="number" @bind-value=item.Ready class ="form-control" style="border:1px solid black; border-radius:5px;" /></td>
-                        <td> <input type="number" @bind-value=item.Delivered class ="form-control" style="border:1px solid black; border-radius:5px; " /></td>
                         <td> <input type="number" @bind-value=item.Cancel class="form-control" style="border:1px solid black; border-radius:5px; " /></td>
                     </tr>
                 }
@@ -79,7 +80,7 @@
     {
         await DailyTableDetailService.GetByKotNo(KotNo);
     }
-  
+
     async Task HandleSubmit()
     {
         foreach (var item in DailyTableDetailService.DailyTableDetails)
@@ -87,6 +88,11 @@
             await DailyTableDetailService.Update(item);
         }             
         NavigationManager.NavigateTo("SupervisorScreen");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await TableNameService.GetAll();
     }
 
 }

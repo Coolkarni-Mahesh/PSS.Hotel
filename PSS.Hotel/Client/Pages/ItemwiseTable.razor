@@ -1,6 +1,7 @@
 ﻿@layout EmptyLayout
 @page "/ItemwiseTables"
 @inject IItemwiseTableService ItemwiseTableService
+@inject ITableNameService TableNameService
 
 <_Header Title=@TitleName></_Header>
 
@@ -12,10 +13,10 @@
                 <thead style="background-color:blueviolet; color: white;">
                     <tr style="text-align:center">
                         <th>Item Name</th>
-                        <th>Table No</th>
+                        <th>Table</th>
                         <th>Pending</th>
                         <th>Cooking</th>
-                        <th>Cancel Item</th>
+                        <th>Cancel</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,66 +55,79 @@
     protected override async Task OnInitializedAsync()
     {
         await ItemwiseTableService.GetAll();
+        await TableNameService.GetAll();
         Load();
 
     }
 
     private void Load()
     {
-        foreach (var item in ItemwiseTableService.DailyTableDetails)
+        try
         {
-            ItemwiseModel ItemwiseTable = new ItemwiseModel()
-                {
 
-                    ItemName = item.itemMaster?.ItemName!,
-                    TableName = item.TableNo.ToString(),
-                    NoOfPendingItem = item.Pending,
-                    NoOfCookingItem = item.Cooking,
-                    NoOfCancelItem = Convert.ToInt32(item.Cancel),
-                    KOTMessage = item.Kotmsg
-                };
-            ItemwiseTableModelList.Add(ItemwiseTable);
+
+            foreach (var item in ItemwiseTableService.DailyTableDetails)
+            {
+                ItemwiseModel ItemwiseTable = new ItemwiseModel()
+                    {
+
+                        ItemName = item.itemMaster?.ItemName!,
+                        TableName = TableNameService.TableNames.FirstOrDefault(temp => temp.TableId == item.TableNo)?.TableName1,
+                        NoOfPendingItem = item.Pending,
+                        NoOfCookingItem = item.Cooking,
+                        NoOfCancelItem = Convert.ToInt32(item.Cancel),
+                        KOTMessage = item.Kotmsg
+                    };
+                ItemwiseTableModelList.Add(ItemwiseTable);
+            }
+
+
+            var k = ItemwiseTableModelList.OrderBy(temp => temp.ItemName)
+            .GroupBy(ItemwiseTableModelList => new { ItemwiseTableModelList.ItemName, ItemwiseTableModelList.KOTMessage })
+            .Select(group => new
+            {
+
+                ItemName = group.Key.ItemName + ((group.Key.KOTMessage == "-") ? "" : "         [ " + group.Key.KOTMessage + " ] "),
+                TableName = string.Join(", ", group.Select(item => item.TableName).Distinct()),
+                NoOfPendingItem = group.Sum(item => item.NoOfPendingItem),
+                NoOfCookingItem = group.Sum(item => item.NoOfCookingItem),
+                NoOfCancelItem = group.Sum(item => item.NoOfCancelItem)
+
+            });
+
+            // var k = from dailyTableDetail in ItemwiseTableModelList
+            //         group dailyTableDetail by dailyTableDetail.ItemName into grouped
+            //         select new
+            //         {
+            //             ItemName = grouped.Key,
+
+            //             NoOfPendingItem = grouped.Sum(item => item.NoOfPendingItem),
+            //             NoOfCookingItem = grouped.Sum(item => item.NoOfCookingItem),
+            //             NoOfCancelItem = grouped.Sum(item => item.NoOfCancelItem)
+
+            //         } ;
+
+
+            foreach (var item in k)
+            {
+
+                ItemwiseModel model = new ItemwiseModel()
+                    {
+                        ItemName = item.ItemName,
+                        TableName = item.TableName,
+                        NoOfPendingItem = item.NoOfPendingItem,
+                        NoOfCookingItem = item.NoOfCookingItem,
+                        NoOfCancelItem = item.NoOfCancelItem
+                    };
+                ItemwiseTableModelList1.Add(model);
+            }
+
         }
 
-
-        var k = ItemwiseTableModelList.OrderBy(temp => temp.ItemName)
-        .GroupBy(ItemwiseTableModelList => new { ItemwiseTableModelList.ItemName, ItemwiseTableModelList.KOTMessage })
-        .Select(group => new
+        catch (Exception)
         {
 
-            ItemName = group.Key.ItemName + ((group.Key.KOTMessage == "-") ? "" : "         [ " + group.Key.KOTMessage + " ] "),
-            TableName = string.Join(", ", group.Select(item => item.TableName).Distinct()),
-            NoOfPendingItem = group.Sum(item => item.NoOfPendingItem),
-            NoOfCookingItem = group.Sum(item => item.NoOfCookingItem),
-            NoOfCancelItem = group.Sum(item => item.NoOfCancelItem)
-
-        });
-
-        // var k = from dailyTableDetail in ItemwiseTableModelList
-        //         group dailyTableDetail by dailyTableDetail.ItemName into grouped
-        //         select new
-        //         {
-        //             ItemName = grouped.Key,
-
-        //             NoOfPendingItem = grouped.Sum(item => item.NoOfPendingItem),
-        //             NoOfCookingItem = grouped.Sum(item => item.NoOfCookingItem),
-        //             NoOfCancelItem = grouped.Sum(item => item.NoOfCancelItem)
-
-        //         } ;
-
-
-        foreach (var item in k)
-        {
-
-            ItemwiseModel model = new ItemwiseModel()
-                {
-                    ItemName = item.ItemName,
-                    TableName = item.TableName,
-                    NoOfPendingItem = item.NoOfPendingItem,
-                    NoOfCookingItem = item.NoOfCookingItem,
-                    NoOfCancelItem = item.NoOfCancelItem
-                };
-            ItemwiseTableModelList1.Add(model);
+            throw;
         }
     }
 
