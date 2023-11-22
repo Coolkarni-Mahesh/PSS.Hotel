@@ -1,16 +1,15 @@
 ﻿@layout EmptyLayout
 @page "/Itemwise/{ID:int}"
-@using Microsoft.AspNetCore.SignalR.Client
 @inject IDailyTableDetailService DailyTableDetailService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Update Item</PageTitle>
+
 <h3>Update Item</h3>
 
 
 
 <EditForm Model="DailyTableDetailService.SingleDailyTableDetail" OnSubmit="HandleSubmit">
-
     <div class="col-3 p-1">
         <table class="table table-bordered border-primary table-sm table-striped table-hover">
             <thead style="background-color:blueviolet; color: white;">
@@ -27,14 +26,14 @@
                         Total Qty
                     </td>
                     <td>
-                        <input id="TotalQty" readonly type="number"  @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Order class="form-control" style="border:1px solid black; border-radius:5px; " />
+                        <input id="TotalQty" readonly type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Order class="form-control" style="border:1px solid black; border-radius:5px; " />
                     </td>
                 </tr>
 
 
                 <tr>
                     <td style="text-align:center; vertical-align:middle">
-                       Pending
+                        Pending
                     </td>
                     <td>
                         <input id="Pending" readonly type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Pending class="form-control" style="border:1px solid black; border-radius:5px;" />
@@ -61,16 +60,16 @@
 
                 <tr>
                     <td style="text-align:center; vertical-align:middle">
-                       Ready
+                        Ready
                     </td>
                     <td>
                         <input id="Ready" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Ready class="form-control" style="border:1px solid black; border-radius:5px; " />
                     </td>
                 </tr>
-              
+
                 <tr>
                     <td style="text-align:center; vertical-align:middle">
-                       Cancel
+                        Cancel
                     </td>
                     <td>
                         <input id="Cancel" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Cancel class="form-control" style="border:1px solid black; border-radius:5px;" />
@@ -109,15 +108,11 @@
     private HubConnection? hubConnection;
     protected override async Task OnInitializedAsync()
     {
-        hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/DailyTabledetailHub")).Build();
+        hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/DailyTableDetailHub")).Build();
         await hubConnection.StartAsync();
     }
 
     public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
-
-
-
-
 
     protected override async Task OnParametersSetAsync()
     {
@@ -128,7 +123,10 @@
     {
 
         _dailyTableDetail = await DailyTableDetailService.Update(DailyTableDetailService.SingleDailyTableDetail);
-        if (IsConnected) await SendMessage();
+
+        if (IsConnected)
+            await SendMessage();
+
         NavigationManager.NavigateTo("SupervisorScreen");
     }
 

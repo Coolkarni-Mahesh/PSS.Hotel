@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<ModelContext>(options =>
-options.UseJet(builder!.Configuration.GetConnectionString("AccessConnection")));
+options.UseJet(builder.Configuration.GetConnectionString("AccessConnection")));
 
 builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews();
@@ -70,7 +70,7 @@ app.UseRouting();
 
 app.MapRazorPages();
 app.MapControllers();
-app.MapHub<DailyTableDetailHub>("/DailyTabledetailHub");
+app.MapHub<DailyTableDetailHub>("/DailyTableDetailHub");
 app.MapFallbackToFile("index.html");
 
 app.Run();

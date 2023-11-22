@@ -76,6 +76,9 @@
     {
         try
         {
+            KotPendingList.Clear(); 
+            KotPendingList1.Clear();
+
             await DailyTableDetailService.GetAll();
             await TableNameService.GetAll();
 

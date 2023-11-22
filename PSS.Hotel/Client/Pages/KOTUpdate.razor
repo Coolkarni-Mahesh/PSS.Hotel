@@ -76,6 +76,8 @@
     [Parameter]
     public int KotNo { get; set; }
 
+    private HubConnection? hubConnection;
+
     protected override async Task OnParametersSetAsync()
     {
         await DailyTableDetailService.GetByKotNo(KotNo);
@@ -86,13 +88,32 @@
         foreach (var item in DailyTableDetailService.DailyTableDetails)
         {
             await DailyTableDetailService.Update(item);
-        }             
+        }    
+        
+
+        if (IsConnected)
+            await SendMessage();
+
         NavigationManager.NavigateTo("SupervisorScreen");
     }
+
+    Task SendMessage() => hubConnection!.SendAsync("SendMessage");
 
     protected override async Task OnInitializedAsync()
     {
         await TableNameService.GetAll();
+
+        hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/DailyTableDetailHub")).Build();
+        await hubConnection.StartAsync();
     }
+
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    public void Dispose()
+    {
+        _ = hubConnection!.DisposeAsync();
+    }
+
+
 
 }
