@@ -1,6 +1,8 @@
 ﻿@layout LoginLayOut
 @page "/"
 @inject NavigationManager NavigationManager
+@inject IDeviceRegistrationService DeviceRegistrationService
+
 <div class="flex-container">
     <div class="col-sm-5 col-12 mx-auto position-static">
         <div class="p-5 bg-white shadow-lg bg">
@@ -31,14 +33,16 @@
                        type="text"
                        value="@DateTime.Now.ToString("dd/MM/yyyy")" />
                 <button name="btnSubmit"
-                        tabindex="3"
+                        tabindex="3"                        
                         type="submit"
-                        class="btn btn-primary w-100 shadow-lg mt-2 btnBorder"
-                @onclick="JumpToLoginPage">
+                        class="btn btn-primary w-100 shadow-lg mt-2 btnBorder">
                     Register
                 </button>
                 <div class="text-center pt-4 set-Font">Copyright : Perfect Software Solution Pvt. Ltd.</div>
             </EditForm>
         </div>
     </div>
+</div>
+<div>
+    <span style="color:red">@ErrorMessage</span>
 </div>
