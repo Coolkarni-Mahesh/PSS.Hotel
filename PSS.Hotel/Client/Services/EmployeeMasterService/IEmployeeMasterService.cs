@@ -4,7 +4,8 @@ using PSS.Hotel.Shared.Models;
 namespace PSS.Hotel.Client.Services.EmployeeMasterService;
 
 public interface IEmployeeMasterService
-{  
+{
+    event Action EmployeesChanged;
     List<EmployeeMaster> Employees { get; set; }  
     string Message { get; set; }
     Task GetAll();
@@ -13,4 +14,7 @@ public interface IEmployeeMasterService
     Task<EmployeeMaster> Update(EmployeeMaster emp);
     Task Delete(EmployeeMaster emp);
     Task<bool> IsAuthoriezed(string Username, string Password);
+    Task SearchUsers(string searchText);
+    Task<List<string>> GetUserSearchSuggestions(string searchText);
+
 }

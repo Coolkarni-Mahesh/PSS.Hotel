@@ -7,226 +7,101 @@
 @inject ITableNameService TableNameService
 @inject NavigationManager NavigationManager
 
-<_Header Title=@TitleName></_Header>
+@if (DailyTableDetailService.DailyTableDetails == null || DailyTableDetailService.DailyTableDetails.Count == 0)
+{
+    <_Spinner />
+}
+else
+{
+    <_Header Title=@TitleName></_Header>
+@* 
+    <div class="flex-container"> *@
+@* 
+        <div class="Header-Elements" style="float:left;">
+            <label class="form-label" style="margin-left:5px; color:black">Search by Table : </label>
+            <input class="form-control" style="display:inline-block; margin-left:5px; width:auto; border:1px solid black" type="text" @bind-value="@Search" placeholder="Enter Table Name" />
+        </div> *@
 
-<div class="flex-container">
-
-    <div class="Header-Elements" style="float:left;">
-        <label class="form-label" style="margin-left:5px; color:black">Search by Table : </label>
-        <input class="form-control" style="display:inline-block; margin-left:5px; width:auto; border:1px solid black" type="text" @bind-value="@Search" placeholder="Enter Table Name" />
-    </div>
-
-   @*  <div class="Header-Elements" style="float:right">
-        <label class="form-label" style="display:inline-block;color:black">search by Status :</label>
-        <select class="form-select" style="display:inline-block;border:1px solid black">
-            <option>All</option>
-            <option>Pending</option>
-            <option>Delivered</option>
-        </select>
+        @*  <div class="Header-Elements" style="float:right">
+    <label class="form-label" style="display:inline-block;color:black">search by Status :</label>
+    <select class="form-select" style="display:inline-block;border:1px solid black">
+    <option>All</option>
+    <option>Pending</option>
+    <option>Delivered</option>
+    </select>
     </div> *@
 
-</div>
+  @*   </div> *@
 
-
- 
-
-@foreach (var kk in DailyTableService.DailyTables)
-{
-    @* KOT-Wise Item List *@
-    var tt = @ItemwiseTableModelList.Where(temp => temp.TableName == kk.TableId.ToString()).ToList();
-    var KotNoList = tt.Select(temp => temp.KotNo).Distinct().ToList();
-    foreach (var k in KotNoList)
-    {     
-        var pp = tt.Where(temp => temp.KotNo == k).ToList();
-        
-        <div class="m-1" style="display:inline-flex; align-items:flex-start">
-            <table class="table border table-bordered border-primary table-sm table-striped table-hover table-responsive">
-
-                <tr style="background-color:blueviolet; color: white; text-align:center; border:1px solid black">
-                    <td>Table</td>
-                    <td style="padding-left:10px; padding-right:10px">KOT-NO</td>
-                    <td>Captain</td>
-                    <td>Waiter</td>
-                    <td>Customer</td>
-                    <td colspan="3">Time</td>
-                </tr>
-
-                <tr style="text-align:center; border:1px solid black; border-top-color:black">
-                    <td style="font-size:x-large">@TableNameService.TableNames.FirstOrDefault(temp=>temp.TableId == Convert.ToInt32(pp[0].TableName))?.TableName1</td>
-                    <td style="border:1px solid black">@k</td>
-                    <td style="border:1px solid black">@pp[0].CaptainName</td>
-                    <td style="border:1px solid black">@pp[0].WaiterName</td>
-                    <td style="border:1px solid black">@pp[0].CustomerName</td>
-                    <td colspan="3" style="border:1px solid black">@pp[0].StartTime.ToString("hh:mm tt")</td>
-                </tr>
-
-                <tr style="text-align:center; background-color:yellowgreen; border:1px solid blue;">
-                    <td style="border:1px solid black;">Item Name</td>
-                    <td style="border:1px solid black;">Qty</td>
-                    <td style="border:1px solid black;">Pending</td>
-                    <td style="border:1px solid black;">Delivered</td>
-                    <td style="border:1px solid black;">Cooking</td>
-                    <td style="border:1px solid black;">Ready</td>
-                    <td style="border:1px solid black;">Cancel</td>                   
-                    <td style="border:1px solid black;">Edit</td>                  
-                </tr>
-
-                <tbody>
-
-                    @foreach (var i in pp)
-                    {
-                        <tr>                          
-                            <td>@i.ItemName</td>
-                            <td style="text-align:center">@i.NoOfQuantity</td>
-                            <td style="text-align:center">@i.NoOfPendingItem</td>
-                            <td style="text-align:center">@i.NoOfDeliveredItem</td>
-                            <td style="text-align:center">@i.NoOfCancelItem</td>
-                            <td style="text-align:center">@i.NoOfReadyItem</td>                         
-                            <td style="text-align:center">@i.NoOfCancelItem</td>
-                            <td style="text-align:center">
-                                <button class="btn btn-primary" @onclick="(() => ShowItem(i.DailyTableDetailID))"><i class="oi oi-pencil"></i></button>
-                            </td>
-                        </tr>
-                    }
-
-                </tbody>
-
-                <tr style="text-align:center">
-                    <td colspan="8"><button class="btn btn-primary form-control" style="background-color:blueviolet; width:auto;" @onclick="(()=>UpdateKOT(k))">Update KOT</button></td>
-                </tr>
-            </table>
-        </div>
-   }
-}
-
-<div>
-    <_Footer></_Footer>
-</div>
-
-
-
-@code {
-    string TitleName = "KOT-Wise Status";
-    string? Search;
-    List<int?> kotNoList = new List<int?>();
-
-    int? KotBotNo;
-
-
-
-
-    List<ItemwiseModel> ItemwiseTableModelList = new List<ItemwiseModel>(); 
-    List<ItemwiseModel> ItemwiseTableModelList1 = new List<ItemwiseModel>();
-
-    List<DailyTable_DTO> _dailyTableList = new List<DailyTable_DTO>();
-    List<DailyTableDetail_DTO> _dailyTableDetailList = new List<DailyTableDetail_DTO>();
-
-
-
-
-    protected override async Task OnInitializedAsync()
+    @foreach (var kk in DailyTableService.DailyTables)
     {
-        await DailyTableService.GetAll();
-        await DailyTableDetailService.GetAll();
-        await EmployeeMasterService.GetAll();
-        await ItemwiseTableService.GetAll();
-        await TableNameService.GetAll();
-        Load();       
-    }
-
-    private void Load()
-    {
-        foreach (var item in DailyTableService.DailyTables)
+        @* KOT-Wise Item List *@
+        var tt = @ItemwiseTableModelList.Where(temp => temp.TableName == kk.TableId.ToString()).ToList();
+        var KotNoList = tt.Select(temp => temp.KotNo).Distinct().ToList();
+        foreach (var k in KotNoList)
         {
-            DailyTable_DTO dailyTable_DTO = new DailyTable_DTO()
-                {
-                    TableName = item.TableId.ToString(),
-                    CaptainName =  EmployeeMasterService.Employees.Where(temp => temp.Empno == item.CaptainCode).Select(temp => temp.AliasName).FirstOrDefault(),
-                    WaiterName = EmployeeMasterService.Employees.Where(temp => temp.Empno == item.WetterCode).Select(temp => temp.AliasName).FirstOrDefault(),
-                    CustomerName = item.CustName,
-                    Time = Convert.ToDateTime(item.StartTime)
-                };
-            _dailyTableList.Add(dailyTable_DTO);
+            var pp = tt.Where(temp => temp.KotNo == k).ToList();
+
+            <div class="m-1" style="display:inline-flex; align-items:flex-start">
+                <table class="table border table-bordered border-primary table-sm table-striped table-hover table-responsive">
+
+                    <tr style="background-color:blueviolet; color: white; text-align:center; border:1px solid black">
+                        <td>Table</td>
+                        <td style="padding-left:10px; padding-right:10px">KOT-NO</td>
+                        <td>Captain</td>
+                        <td>Waiter</td>
+                        <td>Customer</td>
+                        <td colspan="3">Time</td>
+                    </tr>
+
+                    <tr style="text-align:center; border:1px solid black; border-top-color:black">
+                        <td style="font-size:x-large">@TableNameService.TableNames.FirstOrDefault(temp=>temp.TableId == Convert.ToInt32(pp[0].TableName))?.TableName1</td>
+                        <td style="border:1px solid black">@k</td>
+                        <td style="border:1px solid black">@pp[0].CaptainName</td>
+                        <td style="border:1px solid black">@pp[0].WaiterName</td>
+                        <td style="border:1px solid black">@pp[0].CustomerName</td>
+                        <td colspan="3" style="border:1px solid black">@pp[0].StartTime.ToString("hh:mm tt")</td>
+                    </tr>
+
+                    <tr style="text-align:center; background-color:yellowgreen; border:1px solid blue;">
+                        <td style="border:1px solid black;">Item Name</td>
+                        <td style="border:1px solid black;">Qty</td>
+                        <td style="border:1px solid black;">Pending</td>
+                        <td style="border:1px solid black;">Delivered</td>
+                        <td style="border:1px solid black;">Cooking</td>
+                        <td style="border:1px solid black;">Ready</td>
+                        <td style="border:1px solid black;">Cancel</td>
+                        <td style="border:1px solid black;">Edit</td>
+                    </tr>
+
+                    <tbody>
+
+                        @foreach (var i in pp)
+                        {
+                            <tr>
+                                <td>@i.ItemName</td>
+                                <td style="text-align:center">@i.NoOfQuantity</td>
+                                <td style="text-align:center">@i.NoOfPendingItem</td>
+                                <td style="text-align:center">@i.NoOfDeliveredItem</td>
+                                <td style="text-align:center">@i.NoOfCancelItem</td>
+                                <td style="text-align:center">@i.NoOfReadyItem</td>
+                                <td style="text-align:center">@i.NoOfCancelItem</td>
+                                <td style="text-align:center">
+                                    <button class="btn btn-primary" @onclick="(() => ShowItem(i.DailyTableDetailID))"><i class="oi oi-pencil"></i></button>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                    <tr style="text-align:center">
+                        <td colspan="8"><button class="btn btn-primary form-control" style="background-color:blueviolet; width:auto;" @onclick="(()=>UpdateKOT(k))">Update KOT</button></td>
+                    </tr>
+                </table>
+            </div>
         }
-
-        foreach (var item in DailyTableDetailService.DailyTableDetails.Where(temp=>temp.Kotbot == "K"))
-        {
-            DailyTableDetail_DTO dailyTableDetail_DTO = new DailyTableDetail_DTO()
-                {
-                    TableName = item.TableNo.ToString(),
-                    ItemName = item.itemMaster?.ItemName,
-                    KOTMsg = item.Kotmsg,
-                   // StartTime = Convert.ToDateTime(item.StartTime),
-                    StartTime = DateTime.Parse(item.StartTime!),
-                    Delivered = item.Delivered,
-                    Pending = item.Pending,
-                    Ready = item.Ready,
-                    Cooking = item.Cooking,
-                    Cancel = Convert.ToInt32(item.Cancel),
-                    KotNo = item.KotNo,
-                    DailyTableDetailID = item.DailyTableDetailId,
-                    Qty = item.Order
-
-                };
-            _dailyTableDetailList.Add(dailyTableDetail_DTO);
-        }
-
-        foreach (var item in _dailyTableList)
-        {
-            foreach (var item1 in _dailyTableDetailList
-                .OrderBy(temp=>temp.ItemName)              
-                .Where(temp => temp.TableName == item.TableName).DistinctBy(temp=>new { temp.ItemName, temp.KOTMsg}).ToList())
-            {
-                ItemwiseModel ItemwiseTable = new ItemwiseModel()
-                    {
-                        TableName =item1.TableName,
-                        KotNo = item1.KotNo,
-                        CaptainName = item.CaptainName,
-                        WaiterName = item.WaiterName,
-                        CustomerName = item.CustomerName,
-                        StartTime = item1.StartTime,
-                        ItemName = item1.ItemName + ((item1.KOTMsg != "-") ? " [ " + item1.KOTMsg + " ] " : ""),
-                        KOTMessage = item1.KOTMsg,
-                        NoOfPendingItem = item1.Pending,
-                        NoOfCookingItem = item1.Cooking,
-                        NoOfCancelItem = item1.Cancel,
-                        NoOfDeliveredItem = item1.Delivered,
-                        NoOfReadyItem = item1.Ready,
-                        DailyTableDetailID = item1.DailyTableDetailID,
-                        NoOfQuantity = item1.Qty
-                    };
-                ItemwiseTableModelList.Add(ItemwiseTable);
-            }
-        }
-
-
-
-
-
-
-
-
-        // var k = ItemwiseTableModelList.OrderBy(temp => temp.ItemName)
-        // .GroupBy(ItemwiseTableModelList => new { ItemwiseTableModelList.ItemName, ItemwiseTableModelList.KOTMessage })
-        // .Select(group => new
-        // {
-        //     TableName,
-
-        //     ItemName = group.Key.ItemName + ((group.Key.KOTMessage == "-") ? "" : "         [ " + group.Key.KOTMessage + " ] "),
-
-        //     NoOfPendingItem = group.Sum(item => item.NoOfPendingItem),
-        //     NoOfCookingItem = group.Sum(item => item.NoOfCookingItem),
-        //     NoOfCancelItem = group.Sum(item => item.NoOfCancelItem)
-        // });
-
     }
-
-    void ShowItem(int? ID)
-    {
-        NavigationManager.NavigateTo($"Itemwise/{ID}");
-    }
-    void UpdateKOT(int? KotNo)
-    {
-        NavigationManager.NavigateTo($"KotUpdate/{KotNo}");
-    }
+    <div>
+        <_Footer></_Footer>
+    </div>
 }

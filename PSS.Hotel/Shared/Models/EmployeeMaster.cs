@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PSS.Hotel.Shared.Models;
@@ -8,6 +9,7 @@ public partial class EmployeeMaster
 {
     public int? Empno { get; set; }
 
+   
     public string? Firstname { get; set; }
 
     public string? MiddleName { get; set; }
@@ -37,9 +39,9 @@ public partial class EmployeeMaster
     public string? Deleteflag { get; set; }
 
     public string? EmpId { get; set; }
-
+    [Required(ErrorMessage = "* User name is requred")]
     public string? AliasName { get; set; }
-
+    [Required(ErrorMessage = "* Password is requred")]
     public string? Password { get; set; }
 
     public string? AdminFlag { get; set; }

@@ -1,36 +1,44 @@
-﻿namespace PSS.Hotel.Client.Pages;
+﻿using Microsoft.AspNetCore.Components;
+
+namespace PSS.Hotel.Client.Pages;
 
 public partial class LogIn
 {
-    string Message = string.Empty;
-
-    EmployeeMaster employeeMaster = new EmployeeMaster();
-
+    EmployeeMaster _employeeMaster = new EmployeeMaster();
+    string Message = "Loading...";
     protected override async Task OnInitializedAsync()
     {
-        await EmployeeMasterService.GetAll();
+        try
+        {
+            await EmployeeMasterService.GetAll();
+            await DataService.GetAll();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error in OnInitializedAsync()" + ex);
+        }
     }
-
     async Task HandleSubmit()
     {
-
-        if (!string.IsNullOrWhiteSpace(employeeMaster.AliasName) && !string.IsNullOrWhiteSpace(employeeMaster.Password))
+        try
         {
-            var result = await EmployeeMasterService.IsAuthoriezed(employeeMaster.AliasName!, employeeMaster.Password!);
-            if (result)
+            if (!string.IsNullOrWhiteSpace(_employeeMaster.AliasName) && !string.IsNullOrWhiteSpace(_employeeMaster.Password))
             {
-                NavigationManager.NavigateTo("/Index");
-            }
-            else
-            {
-                Message = "Wrong Username and Password ";
-                NavigationManager.NavigateTo("/Login");
-
+                var result = await EmployeeMasterService.IsAuthoriezed(_employeeMaster.AliasName!, _employeeMaster.Password!);
+                if (result)
+                {
+                    NavigationManager.NavigateTo("/Index");
+                }
+                else
+                {
+                    Message = "User not found";
+                    NavigationManager.NavigateTo("/Login");
+                }
             }
         }
-        else
+        catch (Exception ex)
         {
-            Message = "Username and Password does not match";
+            Console.WriteLine("Erro in Login - HandleSubmit()" + ex);
         }
     }
 }

@@ -7,6 +7,7 @@
     <div class="col-sm-5 col-12 mx-auto position-static">
         <div class="p-5 bg-white shadow-lg bg">
             <EditForm Model="deviceRegistration" OnValidSubmit="HandleSubmit">
+                <DataAnnotationsValidator />
                 <h5 class="text-center set-Font">Server Registration</h5>
                 <label id="lblUserName" for="txtUserName" class="font-500 set-Font">User Name</label>
                 <InputText id="txtUserName"
@@ -17,6 +18,7 @@
                 @bind-Value="deviceRegistration.Username"
                 @onkeypress="@keydown">
                 </InputText>
+                <ValidationMessage For="@(()=>deviceRegistration.Username)" />
                 <label id="lblServerIpAddress" for="txtServerIPAddress" class="font-500 set-Font">Server IP Address</label>
                 <InputText id="txtServerIPAddress"
                            tabindex="2"
@@ -26,6 +28,8 @@
                 @bind-Value="deviceRegistration.ServerIPAddress"
                 @onkeypress="@keydown">
                 </InputText>
+                <ValidationMessage For="@(()=>deviceRegistration.ServerIPAddress)" />
+                <span class="text-danger"> @ErrorMessage</span>
                 <label id="lblRegistrationDate" for="txtRegistrationDate" class="font-500 set-Font">Registration Date</label>
                 <input id="txtRegistrationDate"
                        class="form-control mb-3 TextBoxBorder"
@@ -33,7 +37,7 @@
                        type="text"
                        value="@DateTime.Now.ToString("dd/MM/yyyy")" />
                 <button name="btnSubmit"
-                        tabindex="3"                        
+                        tabindex="3"
                         type="submit"
                         class="btn btn-primary w-100 shadow-lg mt-2 btnBorder">
                     Register
@@ -43,6 +47,4 @@
         </div>
     </div>
 </div>
-<div>
-    <span style="color:red">@ErrorMessage</span>
-</div>
+

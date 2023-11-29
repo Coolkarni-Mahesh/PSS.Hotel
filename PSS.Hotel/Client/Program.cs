@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using PSS.Hotel.Client;
 
 using Radzen;
+using PSS.Hotel.Client.Services.DataService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -27,6 +28,6 @@ builder.Services.AddScoped<IItemwiseTableService, ItemwiseTableService>();
 builder.Services.AddScoped<IDailyTableService, DailyTableService>();
 builder.Services.AddScoped<ITableNameService, TableNameService>();
 builder.Services.AddScoped<IDeviceRegistrationService, DeviceRegistrationService>();
-
+builder.Services.AddScoped<IDataService,DataService>();
 
 await builder.Build().RunAsync();

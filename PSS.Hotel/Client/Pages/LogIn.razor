@@ -1,61 +1,64 @@
 ﻿@layout LoginLayOut
 @page "/Login"
-@using PSS.Hotel.Client.LOV;
+@* @page "/search/{SearchText}" *@
 @inject NavigationManager NavigationManager
 @inject IEmployeeMasterService EmployeeMasterService
+@inject IDataService DataService
 
 
-<div class="container">
-    <div class="col-lg-5 mx-auto my-auto">
-        <div class="text-center image-size-small position-relative">
-            <img src="/images/PSSLogo2.ico" class="rounded-circle p-4">
-        </div>
-        <div class="p-4 bg">
-            <div> <h4 class="text-center pt-4 set-Font">Ambar</h4> </div>
-            <div> <h5 class="text-center pt-1 set-Font">User Login</h5> </div>
-
-            <EditForm Model="employeeMaster" OnValidSubmit="HandleSubmit">
-
-                <label id="lblUser" for="txtempUsername" class="font-500 set-Font">User</label>
-                <InputSelect id="txtempUsername"
-                             class="form-select mb-2"
-                             Placeholder="Select Employee Name"
-                             style="border-radius:20px; border: 1px solid#2b3990;"
-                @bind-Value="employeeMaster.AliasName">
-
-                    @foreach (var emp in EmployeeMasterService.Employees)
-                    {
-                        <option value="@emp.AliasName">@emp.AliasName</option>
-                    }
-                </InputSelect>
-
-                <label id="lblPassword" for="txtpassword" class="font-500 set-Font">Password</label>
-                <InputText id="txtpassword"
-                           type="password"
-                           class="form-control mb-2"
-                           placeholder="Password"
-                           style="border-radius:20px; border: 1px solid#2b3990;"
-                @bind-Value="employeeMaster.Password">
-                </InputText>
-
-                <label id="lblSection" for="dpSection" class="font-500 set-Font">Section</label>
-                <select id="dpSection"
-                        class="form-select mb-4 set-Font"
-                        style="border-radius:20px; border: 1px solid#2b3990;">
-                    <option value="Kitchen">Kitchen</option>
-                    <option value="Waiter">Waiter</option>
-                </select>
-
-                <RadzenStack AlignItems="AlignItems.Center">
-                    <p class="align-self-center py-0 AlignItem set-Font">Transaction Date : @DateTime.Now.ToString("dd/MM/yyyy") </p>
-                </RadzenStack>
-
-                <button id="btnSignIn" class="btn btn-primary btn-lg w-100 shadow-lg" style="border-radius:20px;">SIGN IN</button>
-
-                <p class="mb-0 text-center pt-2 set-Font">Copyright : Perfect Software Solution Pvt. Ltd.</p>
-
-            </EditForm>
+@if (EmployeeMasterService.Employees == null || EmployeeMasterService.Employees?.Count == 0)
+{
+    <h6>@Message</h6>
+    <br />
+    <_Spinner />
+}
+else
+{
+    <div class="container">
+        <div class="col-lg-5 mx-auto my-auto">
+            <div class="text-center image-size-small position-relative">
+                <img src="/images/PSSLogo2.ico" class="rounded-circle p-4">
+            </div>
+            <div class="p-4 bg">
+                <div> <h4 class="text-center pt-2 set-Font">@DataService.Datas.FirstOrDefault()?.Orgname</h4> </div>
+                <div> <h5 class="text-center pt-0 set-Font">User Login</h5> </div>
+                <EditForm Model="_employeeMaster" OnValidSubmit="HandleSubmit">
+                    <DataAnnotationsValidator />
+                    <label id="lblUser" for="txtempUsername" class="font-500 set-Font">User</label>
+                    <InputSelect id="txtempUsername"
+                                 class="form-select mb-2"
+                                 Placeholder="Select Employee Name"
+                                 style="border-radius:20px; border: 1px solid#2b3990;"
+                    @bind-Value="_employeeMaster.AliasName">
+                        @foreach (var emp in EmployeeMasterService.Employees!)
+                        {
+                            <option value="@emp.AliasName">@emp.AliasName</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(()=>_employeeMaster.AliasName)" />
+                    <label id="lblPassword" for="txtpassword" class="font-500 set-Font">Password</label>
+                    <InputText id="txtpassword"
+                               type="password"
+                               class="form-control mb-2"
+                               placeholder="Password"
+                               style="border-radius:20px; border: 1px solid#2b3990;"
+                    @bind-Value="_employeeMaster.Password">
+                    </InputText>
+                    <ValidationMessage For="@(()=>_employeeMaster.Password)" />
+                    <label id="lblSection" for="dpSection" class="font-500 set-Font">Section</label>
+                    <select id="dpSection"
+                            class="form-select mb-4 set-Font"
+                            style="border-radius:20px; border: 1px solid#2b3990;">
+                        <option value="Kitchen">Kitchen</option>
+                        <option value="Waiter">Waiter</option>
+                    </select>
+                    <RadzenStack AlignItems="AlignItems.Center">
+                        <p class="align-self-center py-0 AlignItem set-Font">Transaction Date : @DateTime.Now.ToString("dd/MM/yyyy") </p>
+                    </RadzenStack>
+                    <button id="btnSignIn" type="submit" class="btn btn-primary btn-lg w-100 shadow-lg" style="border-radius:20px;">SIGN IN</button>
+                    <p class="mb-0 text-center pt-2 set-Font">Copyright : Perfect Software Solution Pvt. Ltd.</p>
+                </EditForm>
+            </div>
         </div>
     </div>
-    <span class="align-content-xxl-center" style="color:red">@Message</span>
-</div>
+}

@@ -3,79 +3,81 @@
 @inject IDailyTableDetailService DailyTableDetailService
 @inject NavigationManager NavigationManager
 
-<PageTitle>Update Item</PageTitle>
+@if (DailyTableDetailService.DailyTableDetails == null || DailyTableDetailService.DailyTableDetails.Count == 0)
+{
+    <_Spinner />
+}
+else
+{
+    <PageTitle>Update Item</PageTitle>
+    <h3>Update Item</h3>
+    <EditForm Model="DailyTableDetailService.SingleDailyTableDetail" OnSubmit="HandleSubmit">
+        <div class="col-3 p-1">
+            <table class="table table-bordered border-primary table-sm table-striped table-hover">
+                <thead style="background-color:blueviolet; color: white;">
+                    <tr style="text-align:center">
+                        <th colspan="2">
+                            @DailyTableDetailService.SingleDailyTableDetail?.itemMaster?.ItemName
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
 
-<h3>Update Item</h3>
+                    <tr>
+                        <td style="text-align:center; vertical-align:middle">
+                            Total Qty
+                        </td>
+                        <td>
+                            <input id="TotalQty" readonly type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Order class="form-control" style="border:1px solid black; border-radius:5px; " />
+                        </td>
+                    </tr>
 
 
+                    <tr>
+                        <td style="text-align:center; vertical-align:middle">
+                            Pending
+                        </td>
+                        <td>
+                            <input id="Pending" readonly type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Pending class="form-control" style="border:1px solid black; border-radius:5px;" />
+                        </td>
+                    </tr>
 
-<EditForm Model="DailyTableDetailService.SingleDailyTableDetail" OnSubmit="HandleSubmit">
-    <div class="col-3 p-1">
-        <table class="table table-bordered border-primary table-sm table-striped table-hover">
-            <thead style="background-color:blueviolet; color: white;">
-                <tr style="text-align:center">
-                    <th colspan="2">
-                        @DailyTableDetailService.SingleDailyTableDetail?.itemMaster?.ItemName
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
+                    <tr>
+                        <td style="text-align:center; vertical-align:middle">
+                            Delivered
+                        </td>
+                        <td>
+                            <input id="Delivered" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Delivered class="form-control" style="border:1px solid black; border-radius:5px;" />
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td style="text-align:center; vertical-align:middle">
-                        Total Qty
-                    </td>
-                    <td>
-                        <input id="TotalQty" readonly type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Order class="form-control" style="border:1px solid black; border-radius:5px; " />
-                    </td>
-                </tr>
+                    <tr>
+                        <td style="text-align:center; vertical-align:middle">
+                            Cooking
+                        </td>
+                        <td>
+                            <input id="Delivered" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Cooking class="form-control" style="border:1px solid black; border-radius:5px;" />
+                        </td>
+                    </tr>
 
+                    <tr>
+                        <td style="text-align:center; vertical-align:middle">
+                            Ready
+                        </td>
+                        <td>
+                            <input id="Ready" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Ready class="form-control" style="border:1px solid black; border-radius:5px; " />
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td style="text-align:center; vertical-align:middle">
-                        Pending
-                    </td>
-                    <td>
-                        <input id="Pending" readonly type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Pending class="form-control" style="border:1px solid black; border-radius:5px;" />
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="text-align:center; vertical-align:middle">
-                        Delivered
-                    </td>
-                    <td>
-                        <input id="Delivered" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Delivered class="form-control" style="border:1px solid black; border-radius:5px;" />
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="text-align:center; vertical-align:middle">
-                        Cooking
-                    </td>
-                    <td>
-                        <input id="Delivered" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Cooking class="form-control" style="border:1px solid black; border-radius:5px;" />
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="text-align:center; vertical-align:middle">
-                        Ready
-                    </td>
-                    <td>
-                        <input id="Ready" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Ready class="form-control" style="border:1px solid black; border-radius:5px; " />
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="text-align:center; vertical-align:middle">
-                        Cancel
-                    </td>
-                    <td>
-                        <input id="Cancel" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Cancel class="form-control" style="border:1px solid black; border-radius:5px;" />
-                    </td>
-                </tr>
-                @*  <tr>
+                    <tr>
+                        <td style="text-align:center; vertical-align:middle">
+                            Cancel
+                        </td>
+                        <td>
+                            <input id="Cancel" type="number" @bind-value=@DailyTableDetailService.SingleDailyTableDetail!.Cancel class="form-control" style="border:1px solid black; border-radius:5px;" />
+                        </td>
+                    </tr>
+                    @*  <tr>
                 <td style="text-align:center; vertical-align:middle">
                 Status
                 </td>
@@ -87,62 +89,13 @@
                 </select>
                 </td>
                 </tr> *@
-                <tr>
-                    <td colspan="2" style="text-align:center">
-                        <button type="submit" class="btn btn-primary" style="background-color:blueviolet">Save</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</EditForm>
-
-
-
-@code {
-
-    [Parameter]
-    public int? ID { get; set; }
-    DailyTableDetail _dailyTableDetail = new DailyTableDetail();
-
-    private HubConnection? hubConnection;
-    protected override async Task OnInitializedAsync()
-    {
-        hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/DailyTableDetailHub")).Build();
-        await hubConnection.StartAsync();
-    }
-
-    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
-
-    protected override async Task OnParametersSetAsync()
-    {
-        await DailyTableDetailService.GetByID(ID);
-
-    }
-    async Task HandleSubmit()
-    {
-
-        _dailyTableDetail = await DailyTableDetailService.Update(DailyTableDetailService.SingleDailyTableDetail);
-
-        if (IsConnected)
-            await SendMessage();
-
-        NavigationManager.NavigateTo("SupervisorScreen");
-    }
-
-    Task SendMessage() => hubConnection!.SendAsync("SendMessage");
-
-    // async Task HandleSubmit1()
-    // {
-    //     //  await DailyTableDetailService.Update(DailyTableDetailService.SingleDailyTableDetail,ID);
-    // }
-
-    public void Dispose()
-    {
-        _ = hubConnection!.DisposeAsync();
-    }
-
-
-
-
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <button type="submit" class="btn btn-primary" style="background-color:blueviolet">Save</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </EditForm>
 }

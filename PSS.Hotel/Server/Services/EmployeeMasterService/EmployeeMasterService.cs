@@ -6,19 +6,16 @@ namespace PSS.Hotel.Server.Services.EmployeeMasterService;
 public class EmployeeMasterService : IEmployeeMasterService
 {
     private readonly ModelContext _context;
-
     public EmployeeMasterService(ModelContext context)
     {
         _context = context;
     }
-
     public async Task<ServiceResponse<EmployeeMaster>> Add(EmployeeMaster emp)
     {
         _context.EmployeeMasters.Add(emp);
         await _context.SaveChangesAsync();
         return new ServiceResponse<EmployeeMaster> { Data = emp };
     }
-
     public async Task<ServiceResponse<bool>> Delete(int Id)
     {
         var Delete = await _context.EmployeeMasters.FindAsync(Id);
@@ -34,7 +31,6 @@ public class EmployeeMasterService : IEmployeeMasterService
         await _context.SaveChangesAsync();
         return new ServiceResponse<bool> { Data = true };
     }
-
     public async Task<ServiceResponse<List<EmployeeMaster>>> GetAll()
     {
         var response = new ServiceResponse<List<EmployeeMaster>>
@@ -43,7 +39,6 @@ public class EmployeeMasterService : IEmployeeMasterService
         };
         return response;
     }
-
     public async Task<ServiceResponse<EmployeeMaster>> GetById(int Id)
     {
         var response = new ServiceResponse<EmployeeMaster>();
@@ -61,7 +56,6 @@ public class EmployeeMasterService : IEmployeeMasterService
         }
         return response;
     }
-
     public async Task<bool> IsAuthorized(string Username, string Password)
     {
         bool Auth = false;
@@ -76,8 +70,7 @@ public class EmployeeMasterService : IEmployeeMasterService
             Auth = false;
         }
         return Auth;
-    }
-
+    }  
     public async Task<ServiceResponse<EmployeeMaster>> Update(EmployeeMaster emp)
     {
         var Update = await _context.EmployeeMasters.FirstOrDefaultAsync(p => p.Empno == emp.Empno);
@@ -96,4 +89,30 @@ public class EmployeeMasterService : IEmployeeMasterService
         await _context.SaveChangesAsync();
         return new ServiceResponse<EmployeeMaster> { Data = emp };
     }
+    private async Task<List<EmployeeMaster>> FindUserBySearchText(string searchText)
+    {
+        return await _context.EmployeeMasters.Where(temp => temp.AliasName!.ToLower().Contains(searchText.ToLower())).ToListAsync();
+    }
+    public async Task<ServiceResponse<List<EmployeeMaster>>> SearchUser(string searchText)
+    {
+        var response = new ServiceResponse<List<EmployeeMaster>>
+        {
+            Data = await FindUserBySearchText(searchText)
+        };
+        return response;
+    }
+    public async Task<ServiceResponse<List<string>>> GetUserSearchSuggestions(string searchText)
+    {
+        var users = await FindUserBySearchText(searchText);
+        List<string> result = new List<string>();
+        foreach (var user in users)
+        {
+            if (user.AliasName!.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+            {
+                result.Add(user.AliasName);
+            }
+        }
+        return new ServiceResponse<List<string>> { Data = result };
+    }
+
 }

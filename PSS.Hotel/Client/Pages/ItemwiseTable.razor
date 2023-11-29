@@ -1,199 +1,57 @@
 ﻿@layout EmptyLayout
 @page "/ItemwiseTables"
-@using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager NavigationManager
 @inject IItemwiseTableService ItemwiseTableService
 @inject ITableNameService TableNameService
 @inject IDailyTableDetailService DailyTableDetailService
 
-<_Header Title=@TitleName></_Header>
 
-<body>
-    <div class="col-12 p-3 table-responsive">
-        @if (ItemwiseTableModelList1.Any())     
-        {
-            <table class="table table-bordered border-primary table-sm table-striped table-hover">
-                <thead style="background-color:blueviolet; color: white;">
-                    <tr style="text-align:center">
-                        <th>Item Name</th>
-                        <th>Table</th>
-                        <th>Qty</th>
-                        <th>Pending</th> 
-                        <th>Delivered</th>
-                        <th>Cooking</th>
-                        <th>Ready</th>
-                        <th>Cancel</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in ItemwiseTableModelList1)
-                    {
-                        <tr>
-                            <td>@item.ItemName</td>
-                            <td style="text-align:center">@item.TableName</td>
-                            <td style="text-align:center">@item.NoOfQuantity</td>
-                            <td style="text-align:center">@item.NoOfPendingItem</td>
-                            <td style="text-align:center">@item.NoOfDeliveredItem</td>
-                            <td style="text-align:center">@item.NoOfCookingItem</td>
-                            <td style="text-align:center">@item.NoOfReadyItem</td>
-                            <td style="text-align:center">@item.NoOfCancelItem</td>                     
+@if (ItemwiseTableService.DailyTableDetails == null || ItemwiseTableService.DailyTableDetails.Count == 0)
+{
+    <_Spinner />
+}
+else
+{
+    <_Header Title=@TitleName></_Header>
+    <body>
+        <div class="col-12 p-3 table-responsive">
+            @if (ItemwiseTableModelList1.Any())
+            {
+                <table class="table table-bordered border-primary table-sm table-striped table-hover">
+                    <thead style="background-color:blueviolet; color: white;">
+                        <tr style="text-align:center">
+                            <th>Item Name</th>
+                            <th>Table</th>
+                            <th>Qty</th>
+                            <th>Pending</th>
+                            <th>Delivered</th>
+                            <th>Cooking</th>
+                            <th>Ready</th>
+                            <th>Cancel</th>
                         </tr>
-                    }
-                </tbody>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ItemwiseTableModelList1)
+                        {
+                            <tr>
+                                <td>@item.ItemName</td>
+                                <td style="text-align:center">@item.TableName</td>
+                                <td style="text-align:center">@item.NoOfQuantity</td>
+                                <td style="text-align:center">@item.NoOfPendingItem</td>
+                                <td style="text-align:center">@item.NoOfDeliveredItem</td>
+                                <td style="text-align:center">@item.NoOfCookingItem</td>
+                                <td style="text-align:center">@item.NoOfReadyItem</td>
+                                <td style="text-align:center">@item.NoOfCancelItem</td>
+                            </tr>
+                        }
+                    </tbody>
 
-            </table>
-        }
-    </div>
-
-    <div>
-        <_Footer></_Footer>
-    </div>
-</body>
-
-
-
-
-
-
-@code {
-
-    string TitleName = "Item-Wise Status";
-    List<ItemwiseModel> ItemwiseTableModelList = new List<ItemwiseModel>();
-    List<ItemwiseModel> ItemwiseTableModelList1 = new List<ItemwiseModel>();
-
-
-    private HubConnection? hubConnection;
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/DailyTableDetailHub")).Build();
-            hubConnection.On("ReceiveMessage", () =>
-            {
-                CallLoadData();
-                StateHasChanged();
-            });
-
-            await hubConnection.StartAsync();
-            await LoadData();
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-
-    }
-
-    private void CallLoadData()
-    {
-        Task.Run(async () =>
-        {
-            await LoadData();
-        });
-
-    }
-
-    protected async Task LoadData()
-    {
-
-        try
-        {
-            ItemwiseTableModelList.Clear();
-            ItemwiseTableModelList1.Clear();
-
-            await ItemwiseTableService.GetAll();
-            await TableNameService.GetAll();
-
-
-            int kkkk = ItemwiseTableService.DailyTableDetails.Count();
-            var mkmk = ItemwiseTableService.DailyTableDetails;
-
-            foreach (var item in ItemwiseTableService.DailyTableDetails)
-            {
-                ItemwiseModel ItemwiseTable = new ItemwiseModel()
-                    {
-                        ItemName = item.itemMaster?.ItemName!,
-                        TableName = TableNameService.TableNames.FirstOrDefault(temp => temp.TableId == item.TableNo)?.TableName1,
-                        NoOfQuantity = item.Order,
-                        NoOfPendingItem = item.Pending,
-                        NoOfDeliveredItem = item.Delivered,
-                        NoOfCookingItem = item.Cooking,
-                        NoOfReadyItem = item.Ready,
-                        NoOfCancelItem = Convert.ToInt32(item.Cancel),
-                        KOTMessage = item.Kotmsg
-                    };
-                ItemwiseTableModelList.Add(ItemwiseTable);
+                </table>
             }
+        </div>
 
-
-            var k = ItemwiseTableModelList.OrderBy(temp => temp.ItemName)
-            .GroupBy(ItemwiseTableModelList => new { ItemwiseTableModelList.ItemName, ItemwiseTableModelList.KOTMessage })
-            .Select(group => new
-            {
-
-                ItemName = group.Key.ItemName + ((group.Key.KOTMessage == "-") ? "" : "         [ " + group.Key.KOTMessage + " ] "),
-                TableName = string.Join(", ", group.Select(item => item.TableName).Distinct()),
-                NoOfQuantity = group.Sum(item => item.NoOfQuantity),
-                NoOfPendingItem = group.Sum(item => item.NoOfPendingItem),
-                NoOfDeliveredItem = group.Sum(item => item.NoOfDeliveredItem),
-                NoOfCookingItem = group.Sum(item => item.NoOfCookingItem),
-                NoOfReadyItem = group.Sum(item => item.NoOfReadyItem),
-                NoOfCancelItem = group.Sum(item => item.NoOfCancelItem)
-
-            });
-
-            // var k = from dailyTableDetail in ItemwiseTableModelList
-            //         group dailyTableDetail by dailyTableDetail.ItemName into grouped
-            //         select new
-            //         {
-            //             ItemName = grouped.Key,
-
-            //             NoOfPendingItem = grouped.Sum(item => item.NoOfPendingItem),
-            //             NoOfCookingItem = grouped.Sum(item => item.NoOfCookingItem),
-            //             NoOfCancelItem = grouped.Sum(item => item.NoOfCancelItem)
-
-            //         } ;
-
-
-            foreach (var item in k)
-            {
-
-                ItemwiseModel model = new ItemwiseModel()
-                    {
-                        ItemName = item.ItemName,
-                        TableName = item.TableName,
-                        NoOfQuantity = item.NoOfQuantity,
-                        NoOfPendingItem = item.NoOfPendingItem,
-                        NoOfDeliveredItem = item.NoOfDeliveredItem,
-                        NoOfCookingItem = item.NoOfCookingItem,
-                        NoOfReadyItem = item.NoOfReadyItem,
-                        NoOfCancelItem = item.NoOfCancelItem
-                    };
-                ItemwiseTableModelList1.Add(model);
-            }
-
-            StateHasChanged();
-        
-        }
-
-        catch (Exception)
-        {
-
-            throw;
-        }
-    }
-
-    public void Dispose()
-    {
-        try
-        {
-            _ = hubConnection!.DisposeAsync();
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-    }
-
+        <div>
+            <_Footer></_Footer>
+        </div>
+    </body>
 }

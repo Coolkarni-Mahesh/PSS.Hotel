@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PSS.Hotel.Server.Services.EmployeeMasterService;
 
 namespace PSS.Hotel.Server.Controllers;
 
@@ -28,4 +27,16 @@ public class EmployeeMasterController : ControllerBase
         return result;
     }
 
+    [HttpGet("SearchUser/{SearchText}")]
+    public async Task<ActionResult<ServiceResponse<List<EmployeeMaster>>>> SearchUsers(string SearchText)
+    {
+        var result = await _employeeMasterService.SearchUser(SearchText);
+        return Ok(result);
+    }
+    [HttpGet("Searchsuggestions/{SearchText}")]
+    public async Task<ActionResult<ServiceResponse<List<EmployeeMaster>>>> GetUserSearchSuggestions(string SearchText)
+    {
+        var result = await _employeeMasterService.GetUserSearchSuggestions(SearchText);
+        return Ok(result);
+    }
 }
