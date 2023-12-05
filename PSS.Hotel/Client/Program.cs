@@ -4,6 +4,8 @@ global using PSS.Hotel.Client.Services.EmployeeMasterService;
 global using PSS.Hotel.Client.Services.ItemwiseTableService;
 global using PSS.Hotel.Client.Services.TableNameService;
 global using PSS.Hotel.Client.Services.DeviceRegistrationService;
+global using PSS.Hotel.Client.Services.SectionMasterService;
+
 global using PSS.Hotel.Shared;
 global using PSS.Hotel.Shared.Models;
 using Blazored.LocalStorage;
@@ -29,5 +31,6 @@ builder.Services.AddScoped<IDailyTableService, DailyTableService>();
 builder.Services.AddScoped<ITableNameService, TableNameService>();
 builder.Services.AddScoped<IDeviceRegistrationService, DeviceRegistrationService>();
 builder.Services.AddScoped<IDataService,DataService>();
+builder.Services.AddScoped<ISectionMasterService,SectionMasterService>();
 
 await builder.Build().RunAsync();

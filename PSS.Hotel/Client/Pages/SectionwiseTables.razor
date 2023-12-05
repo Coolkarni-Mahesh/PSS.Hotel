@@ -1,0 +1,168 @@
+﻿@layout EmptyLayout
+@page "/SectionwiseTables"
+@inject ISectionMasterService SectionMasterService
+@inject ITableNameService TableNameService
+@inject IDailyTableService DailyTableService
+@inject IDailyTableDetailService DailyTableDetailService
+@inject ITableNameService TableNameService
+
+
+
+@if (DailyTableDetailService.DailyTableDetails == null || DailyTableDetailService.DailyTableDetails.Count == 0)
+{
+    <_Spinner></_Spinner>
+}
+else
+{
+    <PageTitle>Section-Wise Tables</PageTitle>
+    <div>
+        <_Header Title="Section-Wise Tables"></_Header>
+    </div>
+
+    <div>
+        <select class="form-select mb-1 tbl-select" @onchange="HandleSelectionChange" bind="@selectedOptions" style="border-radius:20px; border: 1px solid#2b3990;">
+            <option value="All" selected>All</option>
+            @foreach (var item in SectionMasterService.Sections.Where(temp => temp.Deleteflag == "N").ToList())
+            {
+                <option value=@item.SectionId>@item.SectionName</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        @{
+            var selectedSectionId = selectedOptions == "All" ? 0 : Convert.ToInt32(selectedOptions);
+            var query = from dailyTable in DailyTableService.DailyTables
+                        join tableName in TableNameService.TableNames on dailyTable.TableId equals tableName.TableId
+                        join sectionMaster in SectionMasterService.Sections on tableName.SectionId equals sectionMaster.SectionId
+                        where selectedOptions == "All" || sectionMaster.SectionId == selectedSectionId
+                        group new { tableName, sectionMaster, dailyTable } by new
+                        {
+                            tableName.TableName1,
+                            sectionMaster.SectionName,
+                            dailyTable.TableId
+                        } into groupedData
+                        select new
+                        {
+                            TableName = groupedData.Key.TableName1,
+                            SectionName = groupedData.Key.SectionName,
+                            TableId = groupedData.Key.TableId
+                        };
+
+            var uniqueSectionNames = query.Select(temp => temp.SectionName).Distinct().ToList();
+        }
+
+        <div>
+            @foreach (var uniqueSectionName in uniqueSectionNames)
+            {
+                <div class="tbl-section">@uniqueSectionName</div>
+            }
+        </div>
+
+        <div style="text-align: center">
+            @foreach (var tableName in query)
+            {
+                <div class="tbl-card">@tableName.TableName</div>
+            }
+        </div>
+    </div>
+
+
+    @* <div>
+    @if (selectedOptions == "All")
+    {
+        foreach (var item in SectionMasterService.Sections)
+        {
+
+
+            var query = from dailyTable in DailyTableService.DailyTables
+                        join tableName in TableNameService.TableNames on dailyTable.TableId equals tableName.TableId
+                        join sectionMaster in SectionMasterService.Sections on tableName.SectionId equals sectionMaster.SectionId
+                        where sectionMaster.SectionId == item.SectionId
+                        group new { tableName, sectionMaster, dailyTable } by new
+                        {
+                            tableName.TableName1,
+                            sectionMaster.SectionName,
+                            dailyTable.TableId
+                        } into groupedData
+                        select new
+                        {
+                            TableName = groupedData.Key.TableName1,
+                            SectionName = groupedData.Key.SectionName,
+                            TableId = groupedData.Key.TableId
+                        };
+
+            var k = @query.Select(temp => temp.SectionName).Distinct().ToList();
+            <div>
+
+                @foreach (var item1 in k)
+                {
+                    <div> @item1.ToString() </div>
+                }
+            </div>
+
+            @foreach (var TableName in query)
+            {
+                <div>@TableName.TableName</div>
+            }
+        }
+    }
+    else
+    {
+        var query = from dailyTable in DailyTableService.DailyTables
+                    join tableName in TableNameService.TableNames on dailyTable.TableId equals tableName.TableId
+                    join sectionMaster in SectionMasterService.Sections on tableName.SectionId equals sectionMaster.SectionId
+                    where sectionMaster.SectionId == Convert.ToInt32(selectedOptions)
+                    group new { tableName, sectionMaster, dailyTable } by new
+                    {
+                        tableName.TableName1,
+                        sectionMaster.SectionName,
+                        dailyTable.TableId
+                    } into groupedData
+                    select new
+                    {
+                        TableName = groupedData.Key.TableName1,
+                        SectionName = groupedData.Key.SectionName,
+                        TableId = groupedData.Key.TableId
+                    };
+
+        var k = @query.Select(temp => temp.SectionName).Distinct().ToList();
+        <div>
+
+            @foreach (var item1 in k)
+            {
+                <div> @item1.ToString() </div>
+            }
+        </div>
+
+        @foreach (var TableName in query)
+        {
+            <div>@TableName.TableName</div>
+        }
+    }
+</div> *@
+
+    <div>
+        <_Footer></_Footer>
+    </div>
+
+}
+
+
+@code {
+    private string? selectedOptions { get; set; } = "All";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SectionMasterService.GetAll();
+        await TableNameService.GetAll();
+        await DailyTableService.GetAll();
+        await DailyTableDetailService.GetAll();
+        await TableNameService.GetAll();
+    }
+
+    public void HandleSelectionChange(ChangeEventArgs e)
+    {
+        selectedOptions = e.Value!.ToString();
+    }
+}

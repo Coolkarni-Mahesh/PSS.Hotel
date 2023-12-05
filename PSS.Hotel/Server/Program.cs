@@ -12,7 +12,7 @@ global using PSS.Hotel.Server.Services.DataService;
 
 using Microsoft.AspNetCore.ResponseCompression;
 using PSS.Hotel.Server.Hubs;
-
+using PSS.Hotel.Server.Services.SectionMasterService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +42,7 @@ builder.Services.AddScoped<ISupervisorScreenService, SupervisorScreenService>();
 builder.Services.AddScoped<IDailyTableService, DailyTableService>();
 builder.Services.AddScoped<ITableNameService, TableNameService> ();
 builder.Services.AddScoped<IDataService, DataService> ();
+builder.Services.AddScoped<ISectionMasterService, SectionMasterService> ();
 
 
 

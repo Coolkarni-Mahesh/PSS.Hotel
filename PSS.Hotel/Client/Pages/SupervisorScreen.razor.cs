@@ -54,8 +54,10 @@ public partial class SupervisorScreen
                     TableName = item.TableNo.ToString(),
                     ItemName = item.itemMaster?.ItemName,
                     KOTMsg = item.Kotmsg,
-                    // StartTime = Convert.ToDateTime(item.StartTime),
-                    StartTime = DateTime.Parse(item.StartTime!),
+                    ////StartTime = Convert.ToDateTime(item.StartTime),
+                    ////StartTime = DateTime.Parse(item.StartTime!.ToString()),
+                    ////StartTime = DateTime.Parse(item.StartTime!.ToString()),
+                    ///
                     Delivered = item.Delivered,
                     Pending = item.Pending,
                     Ready = item.Ready,
